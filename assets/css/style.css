@@ -1668,9 +1668,33 @@ small {
 .encounter-import,
 .encounter-filters {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10rem, 1fr));
-  gap: 0.65rem;
+  grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+  gap: 0.75rem;
   margin-top: 0.75rem;
+}
+
+.encounter-filters {
+  padding: 0.85rem;
+  border: 1px solid rgba(201, 162, 39, 0.24);
+  border-radius: 0.75rem;
+  background: rgba(14, 11, 8, 0.45);
+}
+
+.encounter-filter-field {
+  gap: 0.35rem;
+}
+
+.encounter-filter-field > span {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: rgba(244, 236, 210, 0.8);
+}
+
+.encounter-filter-field input,
+.encounter-filter-field select,
+.encounter-filter-field summary {
+  min-height: 2.2rem;
 }
 
 .encounter-table {
@@ -1701,7 +1725,14 @@ small {
 .encounter-party-row label { flex: 1; }
 .encounter-party-row input { width: 100%; }
 
-.source-dropdown { border: 1px solid rgba(201, 162, 39, 0.3); border-radius: 0.45rem; padding: 0.4rem 0.55rem; }
+.source-dropdown {
+  border: 1px solid rgba(201, 162, 39, 0.3);
+  border-radius: 0.45rem;
+  padding: 0.4rem 0.55rem;
+  background: rgba(245, 236, 209, 0.04);
+}
+.source-dropdown summary { cursor: pointer; }
+.source-dropdown[open] { background: rgba(245, 236, 209, 0.07); }
 .source-options { display: grid; gap: 0.3rem; margin-top: 0.4rem; max-height: 10rem; overflow: auto; }
 .source-options label { display: block; font-size: 0.95rem; }
 .encounter-party-row { display: flex; gap: 0.75rem; align-items: center; justify-content: space-between; }
