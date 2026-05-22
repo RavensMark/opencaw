@@ -1,5 +1,5 @@
 (function () {
-  var XLSX_URL = "data/RMMagicItems.xlsx";
+  var XLSX_URL = "https://docs.google.com/spreadsheets/d/1uRTtsACX1GNBvqgPS58iI-L-EB23ypCq/export?format=xlsx";
   var AVRAE_JSON_URL = "data/avrae-item-export.json";
   var PAGE_SIZE = 100;
   var CART_STORAGE_KEY = "rm-loot-cart-v1";
