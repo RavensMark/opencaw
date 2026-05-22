@@ -729,7 +729,6 @@
       <div class="panel-inner">
         <header class="panel-head">
           <h2>Encounter Generator</h2>
-          <p class="lede" style="color: red;">This feature is Under Construction. It may not work as expected</p>
           <p class="lede">Build combats using Open5e and CritterDB monsters.</p>
         </header>
         <div class="card">
@@ -744,12 +743,27 @@
           </div>
           <p id="critterdb-message" class="alert" hidden></p>
           <div class="encounter-filters">
-            <input type="search" id="filter-search" placeholder="Search by name" />
-            <input type="number" step="0.25" id="filter-cr-min" placeholder="CR min" />
-            <input type="number" step="0.25" id="filter-cr-max" placeholder="CR max" />
-            <select id="filter-type"><option value="">Any</option></select>
-            <input type="text" id="filter-alignment" placeholder="Alignment contains" />
-            <details class="source-dropdown"><summary id="filter-source-summary">All sources</summary><div id="filter-source" class="source-options"></div></details>
+            <label class="field encounter-filter-field" for="filter-search">
+              <span>Name</span>
+              <input type="search" id="filter-search" placeholder="Search by name" />
+            </label>
+            <label class="field encounter-filter-field" for="filter-cr-min">
+              <span>CR min</span>
+              <input type="number" step="0.25" id="filter-cr-min" placeholder="0" />
+            </label>
+            <label class="field encounter-filter-field" for="filter-cr-max">
+              <span>CR max</span>
+              <input type="number" step="0.25" id="filter-cr-max" placeholder="30" />
+            </label>
+            <label class="field encounter-filter-field" for="filter-type">
+              <span>Type</span>
+              <select id="filter-type"><option value="">Any</option></select>
+            </label>
+            <label class="field encounter-filter-field" for="filter-alignment">
+              <span>Alignment</span>
+              <input type="text" id="filter-alignment" placeholder="Any alignment" />
+            </label>
+            <details class="source-dropdown encounter-filter-field"><summary id="filter-source-summary">All sources</summary><div id="filter-source" class="source-options"></div></details>
           </div>
           <div class="table-scroll">
             <table class="encounter-table">
