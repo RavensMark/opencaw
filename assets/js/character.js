@@ -65,7 +65,7 @@
       if (asiValues[stat]) asiText.push(stat + ' +' + asiValues[stat]);
     });
 
-    var finalTotal = total - asiTotal;
+    var finalTotal = total;
     var limit = ngPlus.checked ? 30 : 27;
     pointLimit.textContent = String(limit);
     pointTotal.textContent = String(finalTotal);
