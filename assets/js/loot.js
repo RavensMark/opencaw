@@ -35,7 +35,18 @@
   var nameKey = "";
   var expandedRows = {};
   var hasAutoLoadedLoot = false;
-  var displayKeys = { name: "", type: "", cost: "", attunement: "", a: "", artLink: "", cardLink: "", majorMinor: "", notes: "" };
+  var displayKeys = {
+    name: "",
+    type: "",
+    cost: "",
+    rarity: "",
+    attunement: "",
+    a: "",
+    artLink: "",
+    cardLink: "",
+    majorMinor: "",
+    notes: ""
+  };
 
   function showError(msg) {
     errEl.textContent = msg;
@@ -211,7 +222,8 @@
     displayKeys.name = keyFor(["name", "item", "item name"]) || nameKey || headers[0] || "";
     displayKeys.type = findTypeKey();
     displayKeys.cost = costKey;
-    displayKeys.attunement = keyFor(["attunement", "attunement required"]);
+    displayKeys.rarity = keyFor(["rarity"]) || "Rarity";
+    displayKeys.attunement = keyFor(["attunement", "attunement required", "attunement requirements"]);
     displayKeys.a = keyFor(["a"]);
     displayKeys.artLink = keyFor(["art link", "art"]);
     displayKeys.cardLink = keyFor(["card link", "card"]);
@@ -226,24 +238,64 @@
     return fallback || "";
   }
 
+  function avraeRarityPrice(rarity) {
+    var key = normalizedHeader(rarity);
+    var prices = {
+      common: 75,
+      uncommon: 750,
+      rare: 7500,
+      "very rare": 15000,
+      legendary: 30000
+    };
+    return Object.prototype.hasOwnProperty.call(prices, key) ? prices[key] : NaN;
+  }
+
+  function avraeRarityLabel(rarity) {
+    var key = normalizedHeader(rarity);
+    var labels = {
+      common: "Common",
+      uncommon: "Uncommon",
+      rare: "Rare",
+      "very rare": "Very Rare",
+      legendary: "Legendary",
+      artifact: "Artifact"
+    };
+    return labels[key] || "";
+  }
+
+  function inferAvraeRarity(item) {
+    var text = [item.meta || "", item.desc || ""].join("\n").toLowerCase();
+    var rarities = ["artifact", "legendary", "very rare", "uncommon", "common", "rare"];
+    for (var i = 0; i < rarities.length; i++) {
+      var rarity = rarities[i];
+      var pattern = new RegExp("(^|[^a-z])" + rarity.replace(" ", "\\s+") + "([^a-z]|$)", "i");
+      if (pattern.test(text)) return avraeRarityLabel(rarity);
+    }
+    return "";
+  }
+
   function buildAvraeRows(items) {
     var rows = [];
     var nameCol = firstHeader(["name", "item", "item name"], nameKey || headers[0] || "Name");
     var typeCol = firstHeader(["type", "item type", "category", "item category"], "Type");
     var costCol = costKey || firstHeader(["cost gp", "cost", "cost g p"], "Cost (GP)");
+    var rarityCol = firstHeader(["rarity"], "Rarity");
     var notesCol = firstHeader(["notes", "note"], "Notes");
     var artCol = firstHeader(["art link", "art", "image"], "Art Link");
 
     for (var i = 0; i < items.length; i++) {
       var item = items[i] || {};
+      var rarity = inferAvraeRarity(item);
+      var rarityPrice = avraeRarityPrice(rarity);
       var row = {};
       row[nameCol] = item.name || "Avrae Item";
       row[typeCol] = "Avrae";
-      row[costCol] = "No Value";
+      row[costCol] = isNaN(rarityPrice) ? "No Value" : String(rarityPrice);
+      row[rarityCol] = rarity || "Unknown";
       row[notesCol] = item.desc || item.meta || "";
       row[artCol] = item.image || "";
       row._sheetRow = "avrae-" + (i + 1);
-      row._isNoValue = true;
+      row._isNoValue = isNaN(rarityPrice);
       rows.push(row);
     }
     return rows;
@@ -487,6 +539,7 @@
       var detailsWrap = document.createElement("div");
       detailsWrap.className = "loot-detail-grid";
 
+      appendExpandedField(detailsWrap, "Rarity", cellStr(row, displayKeys.rarity));
       appendExpandedField(detailsWrap, "Attunement", cellStr(row, displayKeys.attunement));
       appendExpandedField(detailsWrap, "A", cellStr(row, displayKeys.a));
       appendExpandedField(detailsWrap, "Art Link", cellStr(row, displayKeys.artLink), { link: true, linkLabel: "Open art" });
@@ -723,7 +776,12 @@
           if (isNaN(c)) return false;
           return showAll || c <= budget;
         });
-        budgetFiltered = sheetRows.concat(buildAvraeRows(avraeItems || []));
+        var avraeRows = buildAvraeRows(avraeItems || []).filter(function (row) {
+          var c = parseCost(row[ck]);
+          if (isNaN(c)) return showAll || isNoValueRow(row);
+          return showAll || c <= budget;
+        });
+        budgetFiltered = sheetRows.concat(avraeRows);
         setupDisplayKeys();
         expandedRows = {};
         page = 1;
