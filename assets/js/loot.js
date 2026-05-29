@@ -21,6 +21,7 @@
   var cartList = document.getElementById("loot-cart-list");
   var cartTotalEl = document.getElementById("loot-cart-total");
   var cartNoValueWarningEl = document.getElementById("loot-cart-novalue-warning");
+  var cartMarkdownOutput = document.getElementById("loot-cart-markdown-output");
   var cartClear = document.getElementById("loot-cart-clear");
 
   if (!searchBtn || !budgetInput || !headerRowEl || !tbody) return;
@@ -666,6 +667,7 @@
   function renderCart() {
     cartList.innerHTML = "";
     var ids = Object.keys(cart);
+    var markdownLines = [];
     var sum = 0;
     var hasNoValue = false;
     var visibleCount = 0;
@@ -679,6 +681,7 @@
       if (!name) name = "Item";
       var qty = entry.qty || 1;
       var mode = entry.mode === "sell" ? "sell" : "buy";
+      markdownLines.push("- " + name + " x " + qty);
       visibleCount++;
       if (isJsonNoValueRow(rw)) hasNoValue = true;
       var lineTotal = (mode === "sell" ? -cartCost(rw) / 2 : cartCost(rw)) * qty;
@@ -747,6 +750,11 @@
       cartList.appendChild(li);
     }
     cartTotalEl.textContent = toPriceText(sum);
+    if (cartMarkdownOutput) {
+      cartMarkdownOutput.textContent = markdownLines.length
+        ? markdownLines.join("\n")
+        : "Add items to cart to generate markdown.";
+    }
     if (cartNoValueWarningEl) cartNoValueWarningEl.hidden = !(visibleCount > 0 && hasNoValue);
   }
 
