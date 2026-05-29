@@ -1330,6 +1330,40 @@ small {
   gap: 0.5rem;
 }
 
+.loot-cart-markdown {
+  margin-top: 0.85rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(201, 162, 39, 0.2);
+}
+
+.loot-cart-markdown h4 {
+  margin: 0;
+  font-family: "Cinzel", serif;
+  color: var(--gold);
+  font-size: 1rem;
+}
+
+.loot-cart-markdown-hint {
+  margin: 0.3rem 0 0.5rem;
+}
+
+.loot-cart-markdown-output {
+  min-height: 3rem;
+  max-height: 10rem;
+  margin: 0;
+  padding: 0.65rem;
+  overflow: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+  border: 1px solid rgba(201, 162, 39, 0.16);
+  border-radius: 8px;
+  background: rgba(12, 10, 15, 0.45);
+  color: var(--parchment);
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
 @media (max-width: 960px) {
   .loot-cart {
     position: relative;
