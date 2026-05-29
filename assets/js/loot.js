@@ -9,9 +9,7 @@
   var showAllBtn = document.getElementById("loot-show-all");
   var nameFilterEl = document.getElementById("loot-name-filter");
   var typeFilterEl = document.getElementById("loot-type-filter");
-  var sortByEl = document.getElementById("loot-sort-by");
   var granularFiltersEl = document.getElementById("loot-granular-filters");
-  var sortDirEl = document.getElementById("loot-sort-dir");
   var statusEl = document.getElementById("loot-status");
   var errEl = document.getElementById("loot-error");
   var tableWrap = document.getElementById("loot-table-wrap");
@@ -35,6 +33,7 @@
   var nameKey = "";
   var expandedRows = {};
   var hasAutoLoadedLoot = false;
+  var sortState = { key: "name", dir: "asc" };
   var displayKeys = {
     name: "",
     type: "",
@@ -336,8 +335,8 @@
       });
     }
 
-    var sortBy = sortByEl ? sortByEl.value : "name";
-    var sortDir = sortDirEl && sortDirEl.value === "desc" ? -1 : 1;
+    var sortBy = sortState.key || "name";
+    var sortDir = sortState.dir === "desc" ? -1 : 1;
     out.sort(function (a, b) {
       if (sortBy === "cost") {
         var ac = parseCost(a[displayKeys.cost]);
@@ -434,6 +433,45 @@
     return Math.max(1, Math.ceil(n / PAGE_SIZE));
   }
 
+  function setSort(key) {
+    if (sortState.key === key) {
+      sortState.dir = sortState.dir === "asc" ? "desc" : "asc";
+    } else {
+      sortState.key = key;
+      sortState.dir = "asc";
+    }
+    page = 1;
+    renderTable();
+  }
+
+  function renderSortableHeader(label, key) {
+    var th = document.createElement("th");
+    var isActive = sortState.key === key;
+    th.scope = "col";
+    th.setAttribute("aria-sort", isActive ? (sortState.dir === "asc" ? "ascending" : "descending") : "none");
+
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "loot-sort-header" + (isActive ? " is-active" : "");
+    btn.setAttribute("aria-label", "Sort by " + label + (isActive && sortState.dir === "asc" ? " descending" : " ascending"));
+    btn.addEventListener("click", function () {
+      setSort(key);
+    });
+
+    var text = document.createElement("span");
+    text.textContent = label;
+    btn.appendChild(text);
+
+    var icon = document.createElement("span");
+    icon.className = "loot-sort-indicator";
+    icon.setAttribute("aria-hidden", "true");
+    icon.textContent = isActive ? (sortState.dir === "asc" ? "▲" : "▼") : "↕";
+    btn.appendChild(icon);
+
+    th.appendChild(btn);
+    headerRowEl.appendChild(th);
+  }
+
   function renderTable() {
     var data = rowsForDisplay();
     var tp = totalPages(data.length);
@@ -442,14 +480,14 @@
     var slice = data.slice(start, start + PAGE_SIZE);
 
     headerRowEl.innerHTML = "";
-    var mainHeaders = ["Name", "Type", "Cost (GP)", "Cart"];
-    for (var h = 0; h < mainHeaders.length; h++) {
-      var th = document.createElement("th");
-      th.scope = "col";
-      th.textContent = mainHeaders[h];
-      if (mainHeaders[h] === "Cart") th.className = "loot-actions-head";
-      headerRowEl.appendChild(th);
-    }
+    renderSortableHeader("Name", "name");
+    renderSortableHeader("Type", "type");
+    renderSortableHeader("Cost (GP)", "cost");
+    var cartTh = document.createElement("th");
+    cartTh.scope = "col";
+    cartTh.className = "loot-actions-head";
+    cartTh.textContent = "Cart";
+    headerRowEl.appendChild(cartTh);
 
     tbody.innerHTML = "";
     for (var r = 0; r < slice.length; r++) {
@@ -830,18 +868,6 @@
   }
   if (nameFilterEl) {
     nameFilterEl.addEventListener("input", function () {
-      page = 1;
-      renderTable();
-    });
-  }
-  if (sortByEl) {
-    sortByEl.addEventListener("change", function () {
-      page = 1;
-      renderTable();
-    });
-  }
-  if (sortDirEl) {
-    sortDirEl.addEventListener("change", function () {
       page = 1;
       renderTable();
     });

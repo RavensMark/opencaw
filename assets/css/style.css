@@ -1080,6 +1080,43 @@ small {
   text-align: center;
 }
 
+.loot-sort-header {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.loot-sort-header:hover,
+.loot-sort-header:focus-visible {
+  color: var(--gold);
+}
+
+.loot-sort-header:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 0.15rem;
+  border-radius: 0.2rem;
+}
+
+.loot-sort-indicator {
+  color: var(--gold);
+  font-size: 0.75rem;
+  line-height: 1;
+  opacity: 0.75;
+}
+
+.loot-sort-header.is-active .loot-sort-indicator {
+  opacity: 1;
+}
+
 .loot-row-main {
   cursor: pointer;
 }
