@@ -39,6 +39,7 @@
       <button type="button" class="tab" role="tab" id="tab-questnotes" aria-selected="false" aria-controls="panel-questnotes" data-tab="questnotes">Quest Notes</button>
       <button type="button" class="tab" role="tab" id="tab-character" aria-selected="false" aria-controls="panel-character" data-tab="character">Character Creation</button>
       <button type="button" class="tab" role="tab" id="tab-avrae" aria-selected="false" aria-controls="panel-avrae" data-tab="avrae">Avrae</button>
+      <button type="button" class="tab" role="tab" id="tab-map" aria-selected="false" aria-controls="panel-map" data-tab="map">Map</button>
       <button type="button" class="tab dm-only" role="tab" id="tab-encounter" aria-selected="false" aria-controls="panel-encounter" data-tab="encounter">Encounter Generator</button>
       <button type="button" class="tab" role="tab" id="tab-links" aria-selected="false" aria-controls="panel-links" data-tab="links">Useful Links</button>
     </nav>
@@ -86,6 +87,10 @@
             <button type="button" class="landing-tile dm-only" data-open-tab="encounter">
               <h3><span class="landing-tile-icon" aria-hidden="true">⚔️</span>Encounter Generator</h3>
               <p>Build encounters from Open5e and imported CritterDB bestiaries.</p>
+            </button>
+            <button type="button" class="landing-tile" data-open-tab="map">
+              <h3><span class="landing-tile-icon" aria-hidden="true">🗺️</span>World Map</h3>
+              <p>Pan around Raven's Mark and open points of interest or regional sub-maps.</p>
             </button>
             <button type="button" class="landing-tile" data-open-tab="links">
               <h3><span class="landing-tile-icon" aria-hidden="true">🗺️</span>Useful Links</h3>
@@ -788,6 +793,41 @@
         </div>
       </div>
     </section>
+    <section id="panel-map" class="panel" role="tabpanel" aria-labelledby="tab-map" hidden>
+      <div class="panel-inner map-panel-inner">
+        <header class="panel-head">
+          <h2>World Map</h2>
+          <p class="lede">Drag to pan around the map. Click a glowing point of interest to open a regional sub-map or reveal a wiki link.</p>
+        </header>
+        <div class="card map-card">
+          <div class="map-toolbar" aria-label="Map controls">
+            <div>
+              <p class="map-current" id="map-current">Raven's Mark World</p>
+              <p class="hint map-help">Use the mouse, touch, or keyboard controls below to explore.</p>
+            </div>
+            <div class="map-actions">
+              <button type="button" class="btn" id="map-home">World Map</button>
+              <button type="button" class="btn" id="map-zoom-out" aria-label="Zoom out">−</button>
+              <button type="button" class="btn" id="map-zoom-in" aria-label="Zoom in">+</button>
+              <button type="button" class="btn" id="map-reset">Reset View</button>
+            </div>
+          </div>
+          <div class="map-layout">
+            <div class="map-viewport" id="map-viewport" tabindex="0" aria-label="Interactive Raven's Mark map. Drag to pan and select markers for points of interest.">
+              <div class="map-stage" id="map-stage">
+                <img id="map-image" class="map-image" src="assets/img/ravensmark-world-map.webp" alt="Raven's Mark world map" draggable="false" />
+                <div id="map-markers" class="map-markers" aria-label="Points of interest"></div>
+              </div>
+            </div>
+            <aside class="map-info" aria-live="polite">
+              <h3 id="map-info-title">Select a point of interest</h3>
+              <p id="map-info-body">Markers can open a sub-map, or show a link that opens in a new browser tab.</p>
+              <div id="map-info-actions" class="map-info-actions"></div>
+            </aside>
+          </div>
+        </div>
+      </div>
+    </section>
     <section id="panel-links" class="panel" role="tabpanel" aria-labelledby="tab-links" hidden>
       <div class="panel-inner">
         <header class="panel-head">
@@ -869,6 +909,7 @@
   <script src="assets/js/avrae.js"></script>
   <script src="assets/js/avrae-use-builder.js"></script>
   <script src="assets/js/avrae-equip-builder.js"></script>
+  <script src="assets/js/map.js"></script>
   <script src="assets/js/copyable.js"></script>
   <script type="module" src="src/main.js"></script>
 </body>
