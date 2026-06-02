@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 850" role="img" aria-labelledby="title desc">
+  <title id="title">Asetria Regional Map</title>
+  <desc id="desc">A closer parchment regional map for Asetria with several point-of-interest markers.</desc>
+  <defs>
+    <linearGradient id="sea" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#225867"/><stop offset="1" stop-color="#123944"/></linearGradient>
+    <radialGradient id="land" cx="45%" cy="45%" r="70%"><stop stop-color="#f5e6bd"/><stop offset="1" stop-color="#d7b363"/></radialGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="2" stdDeviation="4" flood-color="#6b4a17" flood-opacity=".7"/></filter>
+    <style>.label{font:700 34px Cinzel,Georgia,serif;fill:#f4ead8;stroke:#102228;stroke-width:4;paint-order:stroke;text-anchor:middle}.small{font-size:20px}.land{fill:url(#land);stroke:#a77d2e;stroke-width:5;filter:url(#shadow)}.mount{fill:none;stroke:#5b4a36;stroke-width:4;stroke-linejoin:round;stroke-linecap:round}.city{fill:#1b1111;stroke:#f8e8c4;stroke-width:2}</style>
+  </defs>
+  <rect width="1200" height="850" fill="url(#sea)"/>
+  <path class="land" d="M115 338c111-166 310-193 452-108 91 54 135 0 257 32 153 40 227 158 193 292-38 151-212 214-400 174-118-26-190 11-308-15C78 661 30 466 115 338z"/>
+  <path class="land" d="M815 205c83-54 186-34 225 39-50 93-190 107-250 32-13-16-6-49 25-71z"/>
+  <path class="mount" d="M224 503l34-53 38 53m62-102l31-50 36 50m91 171l26-42 32 42m81-220l34-56 39 56m-433 215l24-39 30 39m548-117l31-49 36 49"/>
+  <circle class="city" cx="214" cy="610" r="7"/><text class="label small" x="214" y="646">southern harbor</text>
+  <circle class="city" cx="502" cy="368" r="7"/><text class="label small" x="502" y="343">frost gate</text>
+  <circle class="city" cx="760" cy="578" r="7"/><text class="label small" x="760" y="612">high cairn</text>
+  <text class="label" x="575" y="112">Asetria</text>
+  <text class="label small" x="606" y="790">Click the return marker to go back to the world map.</text>
+</svg>
