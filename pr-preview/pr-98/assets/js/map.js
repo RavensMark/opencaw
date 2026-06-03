@@ -63,7 +63,7 @@
           id: 'lithosphere',
           label: 'K. of Lithosphere',
           x: 54.2,
-          y: 24.1,
+          y: 53.1,
           type: 'link',
           url: 'https://ravensmark.fandom.com/wiki/Lithosphere',
           description: 'Display the wiki page for Lithosphere.'
