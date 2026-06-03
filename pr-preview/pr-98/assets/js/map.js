@@ -36,7 +36,7 @@
           id: 'asetria',
           label: 'Asetria',
           x: 22.2,
-          y: 44.4,
+          y: 79.4,
           type: 'map',
           target: 'asetria',
           description: 'Open a closer regional sub-map for Asetria.'
@@ -45,7 +45,7 @@
           id: 'efriqo',
           label: 'Confederacy of Efriqo',
           x: 62,
-          y: 79,
+          y: 75,
           type: 'link',
           url: 'https://ravensmark.fandom.com/wiki/Confederacy_of_Efriqo',
           description: 'Display the wiki page for the Confederacy of Efriqo.'
@@ -54,7 +54,7 @@
           id: 'vershnila',
           label: 'K. of Vershnila',
           x: 78.2,
-          y: 40.8,
+          y: 50.8,
           type: 'link',
           url: 'https://ravensmark.fandom.com/wiki/Vershnila',
           description: 'Display the wiki page for Vershnila.'
@@ -72,7 +72,7 @@
           id: 'savara',
           label: "Free State of Sa'vara",
           x: 82.8,
-          y: 84.3,
+          y: 86.3,
           type: 'link',
           url: 'https://ravensmark.fandom.com/wiki/Sa%27vara',
           description: "Display the wiki page for Sa'vara."

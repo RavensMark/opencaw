@@ -25,7 +25,7 @@
       markers: [
         {
           id: 'avia',
-          label: 'K. of Avia',
+          label: 'Avia',
           x: 43,
           y: 73.4,
           type: 'link',
@@ -36,7 +36,7 @@
           id: 'asetria',
           label: 'Asetria',
           x: 22.2,
-          y: 94.4,
+          y: 44.4,
           type: 'map',
           target: 'asetria',
           description: 'Open a closer regional sub-map for Asetria.'
@@ -54,7 +54,7 @@
           id: 'vershnila',
           label: 'K. of Vershnila',
           x: 78.2,
-          y: 70.8,
+          y: 40.8,
           type: 'link',
           url: 'https://ravensmark.fandom.com/wiki/Vershnila',
           description: 'Display the wiki page for Vershnila.'
@@ -63,7 +63,7 @@
           id: 'lithosphere',
           label: 'K. of Lithosphere',
           x: 54.2,
-          y: 64.1,
+          y: 24.1,
           type: 'link',
           url: 'https://ravensmark.fandom.com/wiki/Lithosphere',
           description: 'Display the wiki page for Lithosphere.'
@@ -72,7 +72,7 @@
           id: 'savara',
           label: "Free State of Sa'vara",
           x: 82.8,
-          y: 94.3,
+          y: 84.3,
           type: 'link',
           url: 'https://ravensmark.fandom.com/wiki/Sa%27vara',
           description: "Display the wiki page for Sa'vara."
