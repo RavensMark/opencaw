@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1152 2048" role="img" aria-labelledby="title desc">
+  <title id="title">Raven's Mark World Map</title>
+  <desc id="desc">A parchment and ocean fantasy map inspired by the supplied Raven's Mark world map, with labelled regions and seas.</desc>
+  <defs>
+    <filter id="paper" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012" numOctaves="5" seed="17" />
+      <feColorMatrix type="saturate" values="0.35" />
+      <feBlend in="SourceGraphic" mode="multiply" />
+    </filter>
+    <filter id="coast">
+      <feDropShadow dx="0" dy="1" stdDeviation="3" flood-color="#9d7a2e" flood-opacity="0.75" />
+    </filter>
+    <linearGradient id="sea" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#174954" />
+      <stop offset="0.5" stop-color="#2d6b70" />
+      <stop offset="1" stop-color="#11343f" />
+    </linearGradient>
+    <radialGradient id="land" cx="45%" cy="45%" r="65%">
+      <stop offset="0" stop-color="#f5e6bd" />
+      <stop offset="1" stop-color="#d6b765" />
+    </radialGradient>
+    <style>
+      .sea{fill:url(#sea)}.land{fill:url(#land);stroke:#a77d2e;stroke-width:4;filter:url(#coast)}
+      .realm{fill-opacity:.28;stroke-width:5}.label{font:700 32px Cinzel,Georgia,serif;fill:#f3ead8;stroke:#102228;stroke-width:4;paint-order:stroke;text-anchor:middle}.small{font-size:19px}.city{fill:#201414;stroke:#f7e8c4;stroke-width:2}.route{fill:none;stroke:#172832;stroke-width:3;opacity:.45}.mount{fill:none;stroke:#564735;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:.8}.dash{stroke-dasharray:14 12;fill-opacity:.22}.isle{fill:#e9cb7c;stroke:#a77d2e;stroke-width:2;filter:url(#coast)}
+    </style>
+  </defs>
+  <rect class="sea" width="1152" height="2048" />
+  <rect width="1152" height="2048" fill="#fff" opacity=".08" filter="url(#paper)" />
+  <g class="routes">
+    <path class="route" d="M0 310 C130 720 220 1050 430 1530"/><path class="route" d="M470 0 L470 2048"/><path class="route" d="M1045 0 C900 410 820 800 930 1340"/><path class="route" d="M0 1580 L1152 1580"/><path class="route" d="M50 2048 C330 1780 650 1620 1152 1490"/>
+  </g>
+  <g id="continents">
+    <path class="land" d="M662 520c80 4 172 38 199 106 25 64-22 139-74 158 67 8 119 62 116 129-3 76-75 110-139 96 39 52 52 135 12 193-52 75-180 69-241 24-40-30-70-78-85-133-51 32-139 17-172-31-44-64-8-146 58-167-45-24-71-83-50-134 19-48 74-66 129-54-39-81 4-193 95-206 50-7 88 11 116 42 11-14 22-23 36-23z"/>
+    <path class="land" d="M213 912c94-29 179 50 177 148-2 77-54 143-120 159-70 17-133-22-156-84-27-72 3-190 99-223z"/>
+    <path class="land" d="M82 1817c96 0 143-74 249-39 83 27 122 111 73 178-58 79-223 74-313 36-68-29-72-135-9-175z"/>
+    <path class="land" d="M313 414c79-45 171-39 237 6 62 43 105 121 79 187-25 63-107 79-176 63-90-21-156-92-169-166-7-39 2-72 29-90z"/>
+    <path class="land" d="M698 1573c66-11 155 28 183 92 29 68-11 139-87 161-82 23-194-9-227-77-35-73 27-159 131-176z"/>
+    <path class="land" d="M865 1834c76-44 180-36 214 25 40 73-38 148-132 153-99 5-174-59-137-127 10-19 28-36 55-51z"/>
+  </g>
+  <g id="islands">
+    <path class="isle" d="M478 439c28-19 53-21 76-2 2 20-16 31-40 28-23-4-39-3-36-26z"/><path class="isle" d="M557 303c30-21 59-13 70 17-20 24-66 24-70-17z"/><path class="isle" d="M615 585c45-25 83-7 103 27-44 31-100 14-103-27z"/><path class="isle" d="M915 1206c38-36 89-22 106 17-35 31-94 21-106-17z"/><path class="isle" d="M620 1861c34-23 67-18 88 12-27 33-76 27-88-12z"/>
+  </g>
+  <g id="realms">
+    <path class="realm dash" d="M304 77c111-73 247-59 348 27 80 69 98 178 32 269-91 45-257 31-359-35-46-63-55-172-21-261z" fill="#8bc34a" stroke="#d8d000"/>
+    <path class="realm" d="M407 1430c-50 102-24 318 68 370 59-13 101-49 128-94l68-192c-92-72-187-100-264-84z" fill="#bb4cff" stroke="#be28ff"/>
+    <path class="realm" d="M608 1452c111-24 235 30 356-3 93 61 145 130 163 224-202 20-400-11-567-80z" fill="#d6437e" stroke="#ad0d5a"/>
+    <path class="realm" d="M550 1500c104-22 231 25 349 118-34 120-233 223-352 140-39-73-46-164 3-258z" fill="#ffd24d" stroke="#c98e17"/>
+    <path class="realm dash" d="M505 963c73-42 159-28 207 47-18 81-72 126-162 135-47-46-63-107-45-182z" fill="#ff7043" stroke="#fb2100"/>
+    <path class="realm" d="M697 1064c95 7 193 54 261 129 18 64 16 126-5 185-111 34-264-4-330-94 5-85 31-158 74-220z" fill="#9b5a5a" stroke="#8c1430"/>
+    <path class="realm dash" d="M771 1049c117-80 259-102 332-52-5 52-42 88-106 105-82 13-154-4-226-53z" fill="#f4f0df" stroke="#ffffff"/>
+    <path class="realm dash" d="M778 674c76-31 148-22 207 38-16 80-88 129-177 133-58-34-66-90-30-171z" fill="#ec5ad8" stroke="#ff00ff"/>
+    <path class="realm dash" d="M258 881c87-17 155 24 212 113-7 113-83 203-183 228-58-77-72-231-29-341z" fill="none" stroke="#000"/>
+    <path class="realm dash" d="M764 1512c118-7 223 21 287 81-38 94-165 127-243 70-42-30-60-82-44-151z" fill="none" stroke="#0000d4"/>
+    <path class="realm dash" d="M856 1917c70-64 167-73 235-20-16 89-96 135-203 123-48-28-59-63-32-103z" fill="#2fd14b" stroke="#49ff3d"/>
+  </g>
+  <g id="mountains">
+    <path class="mount" d="M520 700l16-24 20 24m-56 31l18-25 17 25m240 358l19-32 25 32m-76 37l17-27 19 27m-78 62l21-32 22 32m-456-84l22-31 25 31m-53 31l18-25 21 25m0-147l22-30 27 30m390 283l18-25 21 25m45 46l18-29 22 29m-297 348l20-31 22 31m43 23l15-23 18 23m-496 283l18-29 22 29m45-34l19-28 23 28m-64 71l21-30 22 30"/>
+  </g>
+  <g id="labels">
+    <text class="label" x="509" y="807" transform="rotate(53 509 807)">Lost Kingdoms</text>
+    <text class="label" x="582" y="1280">K. of Lithosphere</text>
+    <text class="label" x="501" y="1510">K. of Avia</text>
+    <text class="label" x="913" y="1466">K. of Vershnila</text>
+    <text class="label" x="711" y="1607">Confederacy of Efriqo</text>
+    <text class="label" x="255" y="1962">Asetria</text>
+    <text class="label small" x="874" y="823">Kreyelanden</text>
+    <text class="label small" x="633" y="1021">Kingdom of Thyria</text>
+    <text class="label small" x="909" y="1037">The Fionbrul</text>
+    <text class="label small" x="339" y="1133">Laerakond</text>
+    <text class="label small" x="405" y="1456">Gythian Lands</text>
+    <text class="label small" x="990" y="1307">Agharand</text>
+    <text class="label small" x="954" y="1970">Free State of Sa'vara</text>
+    <text class="label small" x="426" y="226">Marrauk</text>
+    <text class="label small" x="694" y="1910">Uheil</text>
+  </g>
+  <g id="cities">
+    <circle class="city" cx="506" cy="1555" r="5"/><text class="label small" x="506" y="1535">raptora city</text>
+    <circle class="city" cx="780" cy="1507" r="5"/><text class="label small" x="780" y="1489">latolis</text>
+    <circle class="city" cx="881" cy="1497" r="5"/><text class="label small" x="881" y="1477">velais</text>
+    <circle class="city" cx="889" cy="1312" r="5"/><text class="label small" x="889" y="1294">blackrock</text>
+    <circle class="city" cx="597" cy="989" r="5"/><text class="label small" x="597" y="970">durfenhall</text>
+    <circle class="city" cx="780" cy="994" r="5"/><text class="label small" x="780" y="973">cochem keep</text>
+    <circle class="city" cx="348" cy="1285" r="5"/><text class="label small" x="348" y="1266">coralspire</text>
+    <circle class="city" cx="680" cy="1878" r="5"/><text class="label small" x="680" y="1859">port nyanzaru</text>
+    <circle class="city" cx="908" cy="1895" r="5"/><text class="label small" x="908" y="1875">seasnake's mist</text>
+  </g>
+</svg>
