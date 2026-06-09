@@ -36,6 +36,70 @@
   var questTuningEl = document.getElementById("quest-tuning");
   var questTuningPreciseEl = document.getElementById("quest-tuning-precise");
   var lastCalcState = null;
+  var PARTY_NAMES_KEY = "opencaw-boopsum-names-v1";
+  var nameCache = { pairs: {} };
+
+  var charDatalist = document.createElement("datalist");
+  charDatalist.id = "boopsum-char-suggestions";
+  var playerDatalist = document.createElement("datalist");
+  playerDatalist.id = "boopsum-player-suggestions";
+  if (rowsEl && rowsEl.parentElement) {
+    rowsEl.parentElement.appendChild(charDatalist);
+    rowsEl.parentElement.appendChild(playerDatalist);
+  }
+
+  function loadNameCache() {
+    try {
+      var raw = localStorage.getItem(PARTY_NAMES_KEY);
+      if (raw) {
+        var data = JSON.parse(raw);
+        if (data && data.pairs && typeof data.pairs === "object") return data;
+      }
+    } catch (e) {}
+    return { pairs: {} };
+  }
+
+  function saveNameCache() {
+    try {
+      localStorage.setItem(PARTY_NAMES_KEY, JSON.stringify(nameCache));
+    } catch (e) {}
+  }
+
+  function refreshDatalists() {
+    charDatalist.innerHTML = "";
+    playerDatalist.innerHTML = "";
+    var players = {};
+    Object.keys(nameCache.pairs)
+      .sort(function (a, b) {
+        return a.localeCompare(b);
+      })
+      .forEach(function (character) {
+        var opt = document.createElement("option");
+        opt.value = character;
+        charDatalist.appendChild(opt);
+        players[nameCache.pairs[character]] = true;
+      });
+    Object.keys(players)
+      .sort(function (a, b) {
+        return a.localeCompare(b);
+      })
+      .forEach(function (player) {
+        var opt = document.createElement("option");
+        opt.value = player;
+        playerDatalist.appendChild(opt);
+      });
+  }
+
+  function rememberParty(party) {
+    party.forEach(function (p) {
+      if (p.character && p.player) nameCache.pairs[p.character] = p.player;
+    });
+    saveNameCache();
+    refreshDatalists();
+  }
+
+  nameCache = loadNameCache();
+  refreshDatalists();
 
   var EFFORT_LEVELS = [
     { key: "quick", label: "Quick / low-interaction", mod: DMod[0] },
@@ -86,7 +150,7 @@
     icon.setAttribute("role", "img");
     icon.setAttribute("aria-hidden", "true");
 
-    function mkField(placeholder, className, name, val) {
+    function mkField(placeholder, className, name, val, listId) {
       var wrap = document.createElement("label");
       wrap.className = "player-field " + className;
       var span = document.createElement("span");
@@ -98,14 +162,28 @@
       input.placeholder = placeholder;
       input.autocomplete = "off";
       if (name) input.name = name;
+      if (listId) input.setAttribute("list", listId);
       input.value = val != null ? String(val) : "";
       wrap.appendChild(span);
       wrap.appendChild(input);
       return wrap;
     }
 
-    var charWrap = mkField("Character", "player-field-char", "partyCharacter", character);
-    var playWrap = mkField("Player", "player-field-player", "partyPlayer", player);
+    var charWrap = mkField("Character", "player-field-char", "partyCharacter", character, "boopsum-char-suggestions");
+    var playWrap = mkField("Player", "player-field-player", "partyPlayer", player, "boopsum-player-suggestions");
+    var charInput = charWrap.querySelector(".player-text");
+    var playInput = playWrap.querySelector(".player-text");
+
+    function fillPlayerFromCache() {
+      if (!charInput || !playInput) return;
+      var player = nameCache.pairs[charInput.value.trim()];
+      if (player) playInput.value = player;
+    }
+
+    if (charInput) {
+      charInput.addEventListener("input", fillPlayerFromCache);
+      charInput.addEventListener("change", fillPlayerFromCache);
+    }
 
     var levelWrap = document.createElement("label");
     levelWrap.className = "player-field player-field-level";
@@ -265,6 +343,7 @@
       return;
     }
     var party = collectParty();
+    rememberParty(party);
     var questTypeInput = getSelectedQuestType();
     if (!questTypeInput || !QUEST_TYPES[questTypeInput.value]) {
       showError("Select a quest type before calculating.");

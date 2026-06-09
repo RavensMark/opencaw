@@ -14,6 +14,12 @@
 
   if (!viewport || !stage || !image || !markerLayer) return;
 
+  var WIKI_BASE = 'https://ravensmark.fandom.com/wiki/';
+
+  function wikiUrl(slug) {
+    return WIKI_BASE + slug;
+  }
+
   var maps = {
     world: {
       name: "Raven's Mark World",
@@ -29,8 +35,8 @@
           x: 43,
           y: 73.4,
           type: 'link',
-          url: 'https://ravensmark.fandom.com/wiki/Avia',
-          description: 'Display the Raven\'s Mark wiki page for Avia and open it in a new tab.'
+          url: wikiUrl('Avia'),
+          description: 'Open the Raven\'s Mark wiki page for Avia in a new tab.'
         },
         {
           id: 'asetria',
@@ -39,7 +45,8 @@
           y: 79.4,
           type: 'map',
           target: 'asetria',
-          description: 'Open a closer regional sub-map for Asetria.'
+          url: wikiUrl('Asetria'),
+          description: 'Open a closer regional sub-map for Asetria, or jump to the wiki page.'
         },
         {
           id: 'efriqo',
@@ -47,8 +54,8 @@
           x: 62,
           y: 75,
           type: 'link',
-          url: 'https://ravensmark.fandom.com/wiki/Confederacy_of_Efriqo',
-          description: 'Display the wiki page for the Confederacy of Efriqo.'
+          url: wikiUrl('Efriqo'),
+          description: 'Open the wiki page for Efriqo in a new tab.'
         },
         {
           id: 'vershnila',
@@ -56,8 +63,8 @@
           x: 78.2,
           y: 50.8,
           type: 'link',
-          url: 'https://ravensmark.fandom.com/wiki/Vershnila',
-          description: 'Display the wiki page for Vershnila.'
+          url: wikiUrl('Vershnila'),
+          description: 'Open the wiki page for Vershnila in a new tab.'
         },
         {
           id: 'lithosphere',
@@ -65,8 +72,8 @@
           x: 54.2,
           y: 53.1,
           type: 'link',
-          url: 'https://ravensmark.fandom.com/wiki/Lithosphere',
-          description: 'Display the wiki page for Lithosphere.'
+          url: wikiUrl('Lithosphere'),
+          description: 'Open the wiki page for Lithosphere in a new tab.'
         },
         {
           id: 'savara',
@@ -74,8 +81,8 @@
           x: 82.8,
           y: 86.3,
           type: 'link',
-          url: 'https://ravensmark.fandom.com/wiki/Sa%27vara',
-          description: "Display the wiki page for Sa'vara."
+          url: wikiUrl('Free_State_of_Sa%27vara'),
+          description: "Open the wiki page for the Free State of Sa'vara in a new tab."
         }
       ]
     },
@@ -89,12 +96,12 @@
       markers: [
         {
           id: 'asetria-wiki',
-          label: 'Asetria Wiki',
+          label: 'Asetria',
           x: 22.2,
           y: 94.4,
           type: 'link',
-          url: 'https://ravensmark.fandom.com/wiki/Asetria',
-          description: 'Display the Asetria wiki page.'
+          url: wikiUrl('Asetria'),
+          description: 'Open the Asetria wiki page in a new tab.'
         },
         {
           id: 'dichaea',
@@ -102,8 +109,8 @@
           x: 15.4,
           y: 91.8,
           type: 'link',
-          url: 'https://ravensmark.fandom.com/wiki/Asetria',
-          description: 'Display the wiki page for Asetria from the regional view.'
+          url: wikiUrl('Dichaea'),
+          description: 'Open the Dichaea wiki page in a new tab.'
         },
         {
           id: 'return-world',
@@ -169,6 +176,16 @@
     if (!keepInfo) resetInfo();
   }
 
+  function appendWikiLink(url) {
+    var link = document.createElement('a');
+    link.className = 'btn primary map-link-btn';
+    link.href = url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = 'Open wiki page';
+    actions.appendChild(link);
+  }
+
   function selectMarker(marker) {
     title.textContent = marker.label;
     body.textContent = marker.description;
@@ -183,16 +200,11 @@
         loadMap(marker.target);
       });
       actions.appendChild(mapBtn);
+      if (marker.url) appendWikiLink(marker.url);
       return;
     }
 
-    var link = document.createElement('a');
-    link.className = 'btn primary map-link-btn';
-    link.href = marker.url;
-    link.target = '_blank';
-    link.rel = 'noopener noreferrer';
-    link.textContent = 'Open wiki page';
-    actions.appendChild(link);
+    appendWikiLink(marker.url);
   }
 
   function zoom(delta) {

@@ -28,7 +28,13 @@
 
   if (!lookupBtn || !userInput || !rewardsBody || !levelInput) return;
 
+  var USERNAME_STORAGE_KEY = "opencaw-staff-username-v1";
   var workbookCache = null;
+
+  try {
+    var savedUsername = localStorage.getItem(USERNAME_STORAGE_KEY);
+    if (savedUsername) userInput.value = savedUsername;
+  } catch (e) {}
 
   function csvUrl() {
     try {
@@ -240,9 +246,18 @@
     }
   }
 
+  function cacheUsername() {
+    var name = userInput.value.trim();
+    if (!name) return;
+    try {
+      localStorage.setItem(USERNAME_STORAGE_KEY, name);
+    } catch (e) {}
+  }
+
   function runLookup() {
     clearError();
     balanceWrap.hidden = true;
+    cacheUsername();
     setStatus("Loading staff totals…");
     lookupBtn.disabled = true;
     loadSheet()

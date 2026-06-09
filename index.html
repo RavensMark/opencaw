@@ -3,6 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script>
+    (function () {
+      var path = window.location.pathname || '/';
+      if (/\/dm\/?$/.test(path)) {
+        window.location.replace(path.replace(/\/?$/, '') + '/index.html' + window.location.search + window.location.hash);
+        return;
+      }
+      var root = path.replace(/\/dm(?:\/.*)?$/, '') || '';
+      var isDm = /\/dm(?:\/|$)/.test(path);
+      if (isDm) {
+        var base = document.createElement('base');
+        base.href = window.location.origin + (root ? root + '/' : '/');
+        document.head.appendChild(base);
+      }
+      document.documentElement.className = isDm ? 'mode-dm' : 'mode-player';
+    })();
+  </script>
   <title>Raven's Mark Tools</title>
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
   <link rel="alternate icon" href="assets/favicon.svg" />
@@ -11,19 +28,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet" />
   <link href="https://fonts.googleapis.com/css2?family=Playball&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css" />
-
 </head>
-<body class="mode-player is-home">
+<body class="is-home">
   <div class="page-bg" aria-hidden="true"></div>
   <header class="site-header">
-    <div class="mode-toggle-wrap">
-      <label class="mode-switch" for="mode-toggle">
-        <span class="mode-switch-label">Player</span>
-        <input type="checkbox" id="mode-toggle" aria-label="Toggle between Player mode and DM mode" />
-        <span class="mode-switch-ui" aria-hidden="true"></span>
-        <span class="mode-switch-label">DM</span>
-      </label>
-    </div>
     <div class="brand">
       <button type="button" class="brand-icon-btn" id="brand-blast" aria-label="Celebrate with feather and raven emojis">
         <span class="brand-icon" aria-hidden="true" style="padding-bottom: 28px;">🪶</span>
@@ -53,7 +61,7 @@
       <div class="panel-inner">
         <header class="panel-head landing-head">
           <h2>Tool Catalogue</h2>
-          <p class="lede">A set of tools for DMs and players. Use the toggle in the top-right to switch</p>
+          <p class="lede">A set of tools for DMs and players.</p>
         </header>
 
         <div class="card landing-card">
