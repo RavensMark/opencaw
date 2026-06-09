@@ -9,6 +9,7 @@
   var showAllBtn = document.getElementById("loot-show-all");
   var nameFilterEl = document.getElementById("loot-name-filter");
   var typeFilterEl = document.getElementById("loot-type-filter");
+  var purchasableFilterEl = document.getElementById("loot-purchasable-filter");
   var granularFiltersEl = document.getElementById("loot-granular-filters");
   var statusEl = document.getElementById("loot-status");
   var errEl = document.getElementById("loot-error");
@@ -45,7 +46,8 @@
     artLink: "",
     cardLink: "",
     majorMinor: "",
-    notes: ""
+    notes: "",
+    purchasable: ""
   };
 
   function showError(msg) {
@@ -229,6 +231,29 @@
     displayKeys.cardLink = keyFor(["card link", "card"]);
     displayKeys.majorMinor = keyFor(["major minor", "major minor roll", "major/minor"]);
     displayKeys.notes = keyFor(["notes", "note"]);
+    displayKeys.purchasable = keyFor(["purchasable", "player purchasable", "player-purchasable"]);
+  }
+
+  function isTruthyPurchasable(value) {
+    var normalized = String(value || "")
+      .trim()
+      .toLowerCase();
+    return normalized === "yes" || normalized === "y" || normalized === "true" || normalized === "1";
+  }
+
+  function isFalsyPurchasable(value) {
+    var normalized = String(value || "")
+      .trim()
+      .toLowerCase();
+    return normalized === "no" || normalized === "n" || normalized === "false" || normalized === "0";
+  }
+
+  function rowPurchasableState(row) {
+    if (!displayKeys.purchasable) return "";
+    var raw = cellStr(row, displayKeys.purchasable);
+    if (isTruthyPurchasable(raw)) return "yes";
+    if (isFalsyPurchasable(raw)) return "no";
+    return "";
   }
 
   function firstHeader(candidates, fallback) {
@@ -335,6 +360,12 @@
         return normalizeTypeValue(cellStr(row, displayKeys.type)).toLowerCase() === typeFilter.toLowerCase();
       });
     }
+    var purchasableFilter = purchasableFilterEl ? String(purchasableFilterEl.value || "").trim().toLowerCase() : "";
+    if (purchasableFilter) {
+      out = out.filter(function (row) {
+        return rowPurchasableState(row) === purchasableFilter;
+      });
+    }
 
     var sortBy = sortState.key || "name";
     var sortDir = sortState.dir === "desc" ? -1 : 1;
@@ -400,6 +431,18 @@
       typeFilterEl.appendChild(opt);
     }
     typeFilterEl.value = seen[selected] ? selected : "";
+  }
+
+  function refreshPurchasableFilterState() {
+    if (!purchasableFilterEl) return;
+    if (!displayKeys.purchasable) {
+      purchasableFilterEl.value = "";
+      purchasableFilterEl.disabled = true;
+      purchasableFilterEl.options[0].textContent = "Purchasable column unavailable";
+      return;
+    }
+    purchasableFilterEl.disabled = false;
+    purchasableFilterEl.options[0].textContent = "All items";
   }
 
   function makeLinkEl(url, label) {
@@ -584,6 +627,7 @@
       appendExpandedField(detailsWrap, "Art Link", cellStr(row, displayKeys.artLink), { link: true, linkLabel: "Open art" });
       appendExpandedField(detailsWrap, "Card Link", cellStr(row, displayKeys.cardLink), { link: true, linkLabel: "Open card" });
       appendExpandedField(detailsWrap, "Major / Minor", cellStr(row, displayKeys.majorMinor));
+      appendExpandedField(detailsWrap, "Purchasable", cellStr(row, displayKeys.purchasable));
       appendExpandedField(detailsWrap, "Notes", cellStr(row, displayKeys.notes));
 
       if (!detailsWrap.children.length) {
@@ -838,6 +882,7 @@
           setStatus("Found " + budgetFiltered.length + " items within " + budget + " gp.");
         }
         refreshTypeFilterOptions();
+        refreshPurchasableFilterState();
         renderTable();
       })
       .catch(function (e) {
@@ -870,6 +915,12 @@
   });
   if (typeFilterEl) {
     typeFilterEl.addEventListener("change", function () {
+      page = 1;
+      renderTable();
+    });
+  }
+  if (purchasableFilterEl) {
+    purchasableFilterEl.addEventListener("change", function () {
       page = 1;
       renderTable();
     });

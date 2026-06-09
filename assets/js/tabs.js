@@ -1,10 +1,8 @@
 (function () {
   var tabs = document.querySelectorAll('.tab');
-  var modeToggle = document.getElementById('mode-toggle');
   var brandHome = document.getElementById('brand-home');
   var landingTiles = document.querySelectorAll('[data-open-tab]');
-  var dmOnlyPanels = ['boopsum', 'staff', 'questinfo'];
-  var MODE_STORAGE_KEY = 'rm-ui-mode-v1';
+  var dmOnlyPanels = ['boopsum', 'staff', 'questinfo', 'encounter'];
   var panels = {
     home: document.getElementById('panel-home'),
     boopsum: document.getElementById('panel-boopsum'),
@@ -39,7 +37,7 @@
   function activate(name, options) {
     options = options || {};
     if (!isKnownPanel(name)) name = 'home';
-    if (document.body.classList.contains('mode-player') && dmOnlyPanels.indexOf(name) !== -1) {
+    if (document.documentElement.classList.contains('mode-player') && dmOnlyPanels.indexOf(name) !== -1) {
       name = 'home';
     }
     document.body.classList.toggle('tab-wide', name === 'loot' || name === 'avrae' || name === 'encounter' || name === 'map');
@@ -62,18 +60,13 @@
     window.dispatchEvent(new CustomEvent('rmtools-tab', { detail: { tab: name } }));
   }
 
-  function saveMode(isDm) {
-    localStorage.setItem(MODE_STORAGE_KEY, isDm ? 'dm' : 'player');
-  }
-
-  function readSavedMode() {
-    return localStorage.getItem(MODE_STORAGE_KEY) === 'dm';
+  function readModeFromPath() {
+    return /\/dm(?:\/|$)/.test(window.location.pathname || '');
   }
 
   function applyMode(isDm) {
-    document.body.classList.toggle('mode-dm', isDm);
-    document.body.classList.toggle('mode-player', !isDm);
-    if (modeToggle) modeToggle.checked = isDm;
+    document.documentElement.classList.toggle('mode-dm', isDm);
+    document.documentElement.classList.toggle('mode-player', !isDm);
     if (!isDm) {
       var activeDmTab = document.querySelector('.tab.is-active.dm-only');
       if (activeDmTab) activate('home');
@@ -98,18 +91,11 @@
     });
   });
 
-  if (modeToggle) {
-    modeToggle.addEventListener('change', function () {
-      applyMode(modeToggle.checked);
-      saveMode(modeToggle.checked);
-    });
-  }
-
   window.addEventListener('hashchange', function () {
     var tabFromHash = readTabFromHash() || 'home';
     activate(tabFromHash, { fromHash: true });
   });
 
-  applyMode(readSavedMode());
+  applyMode(readModeFromPath());
   activate(readTabFromHash() || 'home', { fromHash: true });
 })();
