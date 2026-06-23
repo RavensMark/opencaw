@@ -1,5 +1,10 @@
 import { normalizeMonster } from '../utils/normalize.js';
 
+const OPEN5E_ENDPOINTS = [
+  'https://api.open5e.com/v2/creatures/?format=json',
+  'https://api.open5e.com/v1/monsters/?format=json',
+];
+
 function pickCr(item) {
   const candidates = [
     item.cr,
@@ -33,34 +38,61 @@ function pickSource(item) {
   return null;
 }
 
-export async function fetchAllOpen5eMonsters(onProgress) {
+function normalizeOpen5eCreature(item) {
+  const crValue = pickCr(item);
+  const typeValue = item.type ?? item.creature_type ?? item.creatureType ?? null;
+  const alignmentValue = item.alignment ?? item.alignments ?? null;
+  const sourceValue = pickSource(item);
+
+  return normalizeMonster({
+    name: item.name,
+    cr: crValue,
+    type: typeValue,
+    alignment: alignmentValue,
+    source: sourceValue,
+  }, 'open5e');
+}
+
+async function fetchJson(url) {
+  const response = await fetch(url, {
+    headers: { Accept: 'application/json' },
+  });
+  if (!response.ok) throw new Error(`Open5e request failed (${response.status})`);
+  return response.json();
+}
+
+async function fetchOpen5eEndpoint(firstUrl, onProgress) {
   const all = [];
-  let next = 'https://api.open5e.com/v2/creatures/';
+  let next = firstUrl;
   let page = 1;
 
   while (next) {
     onProgress?.(`Loading Open5e page ${page}...`);
-    const response = await fetch(next);
-    if (!response.ok) throw new Error(`Open5e request failed (${response.status})`);
-    const payload = await response.json();
-    const results = payload.results || [];
+    const payload = await fetchJson(next);
+    const results = Array.isArray(payload) ? payload : payload.results || [];
     for (const item of results) {
-      const crValue = pickCr(item);
-      const typeValue = item.type ?? item.creature_type ?? item.creatureType ?? null;
-      const alignmentValue = item.alignment ?? item.alignments ?? null;
-      const sourceValue = pickSource(item);
-      all.push(normalizeMonster({
-        name: item.name,
-        cr: crValue,
-        type: typeValue,
-        alignment: alignmentValue,
-        source: sourceValue,
-      }, 'open5e'));
+      if (item?.name) all.push(normalizeOpen5eCreature(item));
     }
-    next = payload.next;
+    next = Array.isArray(payload) ? null : payload.next;
     page += 1;
     await new Promise((r) => setTimeout(r, 0));
   }
 
   return all;
+}
+
+export async function fetchAllOpen5eMonsters(onProgress) {
+  const errors = [];
+
+  for (const endpoint of OPEN5E_ENDPOINTS) {
+    try {
+      const monsters = await fetchOpen5eEndpoint(endpoint, onProgress);
+      if (monsters.length) return monsters;
+      errors.push(`${endpoint}: no creatures returned`);
+    } catch (err) {
+      errors.push(`${endpoint}: ${err.message}`);
+    }
+  }
+
+  throw new Error(`Could not load Open5e bestiary. ${errors.join(' | ')}`);
 }
