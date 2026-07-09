@@ -208,7 +208,7 @@
         calc.xp +
         " XP + " +
         calc.gp +
-        " GP (max " +
+        " GP (max per month (10SP) = " +
         calc.monthlyXpMax +
         " XP + " +
         calc.monthlyGpMax +
@@ -216,10 +216,10 @@
       );
     }
     if (reward.key === "xp") {
-      return (calc.xp * 1.5)  + " XP (max " + calc.monthlyXpMax + " XP/month)";
+      return (calc.xp * 1.5)  + " XP (max per month (10SP) = " + (calc.monthlyXpMax * 1.5) + ")";
     }
     if (reward.key === "gp") {
-      return (calc.gp * 1.5) + " GP (max " + calc.monthlyGpMax + " GP/month)";
+      return (calc.gp * 1.5) + " GP (max per month (10SP) = " + (calc.monthlyGpMax * 1.5) + ")";
     }
     return ""
   }
