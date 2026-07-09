@@ -193,7 +193,7 @@
     var cap = DM_LIMITS[idx + 1] || 0;
     var dmXp = Math.floor(cap / 6);
     dmXp = 5 * Math.round(dmXp / 5);
-    var dmGp = Math.floor(dmXp * HALF_PROF[idx] * D_MOD[2] * GP_MOD[idx]);
+    var dmGp = Math.floor(dmXp / HALF_PROF[idx] * D_MOD[2] * GP_MOD[idx]);
     return {
       xp: dmXp,
       gp: dmGp,
