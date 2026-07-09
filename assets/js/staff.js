@@ -216,10 +216,10 @@
       );
     }
     if (reward.key === "xp") {
-      return calc.xp + " XP (max " + calc.monthlyXpMax + " XP/month)";
+      return (calc.xp * 1.5)  + " XP (max " + calc.monthlyXpMax + " XP/month)";
     }
     if (reward.key === "gp") {
-      return calc.gp + " GP (max " + calc.monthlyGpMax + " GP/month)";
+      return (calc.gp * 1.5) + " GP (max " + calc.monthlyGpMax + " GP/month)";
     }
     return ""
   }
