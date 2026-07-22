@@ -146,7 +146,8 @@
       '- [' + checkMark('cc-check-feat') + '] Taken Feat',
       '- [' + checkMark('cc-check-potion') + '] Taken Potion',
       equipmentChoiceLine(),
-      '- [' + checkMark('cc-check-backstory') + '] Rough Backstory'
+      '- [' + checkMark('cc-check-backstory') + '] Rough Backstory',
+      '- [' + checkMark('cc-check-initial-xp') + '] Added initial experience to `!xp` command'
     ].join('\n');
   }
 
