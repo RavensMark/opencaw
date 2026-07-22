@@ -10,6 +10,7 @@
   var nameFilterEl = document.getElementById("loot-name-filter");
   var typeFilterEl = document.getElementById("loot-type-filter");
   var purchasableFilterEl = document.getElementById("loot-purchasable-filter");
+  var purchasableWarningEl = document.getElementById("loot-purchasable-warning");
   var granularFiltersEl = document.getElementById("loot-granular-filters");
   var statusEl = document.getElementById("loot-status");
   var errEl = document.getElementById("loot-error");
@@ -36,6 +37,7 @@
   var expandedRows = {};
   var hasAutoLoadedLoot = false;
   var sortState = { key: "name", dir: "asc" };
+  var isDmMode = document.documentElement.classList.contains("mode-dm");
   var displayKeys = {
     name: "",
     type: "",
@@ -238,14 +240,30 @@
     var normalized = String(value || "")
       .trim()
       .toLowerCase();
-    return normalized === "yes" || normalized === "y" || normalized === "true" || normalized === "1";
+    return (
+      normalized === "yes" ||
+      normalized === "y" ||
+      normalized === "true" ||
+      normalized === "1" ||
+      normalized === "purchasable" ||
+      normalized === "player purchasable"
+    );
   }
 
   function isFalsyPurchasable(value) {
     var normalized = String(value || "")
       .trim()
       .toLowerCase();
-    return normalized === "no" || normalized === "n" || normalized === "false" || normalized === "0";
+    return (
+      normalized === "no" ||
+      normalized === "n" ||
+      normalized === "false" ||
+      normalized === "0" ||
+      normalized === "unpurchasable" ||
+      normalized === "un-purchasable" ||
+      normalized === "not purchasable" ||
+      normalized === "dm loot"
+    );
   }
 
   function rowPurchasableState(row) {
@@ -433,16 +451,35 @@
     typeFilterEl.value = seen[selected] ? selected : "";
   }
 
+  function defaultPurchasableFilterValue() {
+    return isDmMode ? "no" : "yes";
+  }
+
+  function updatePurchasableWarning() {
+    if (!purchasableWarningEl || !purchasableFilterEl) return;
+    purchasableWarningEl.hidden = !(isDmMode && purchasableFilterEl.value === "");
+  }
+
   function refreshPurchasableFilterState() {
     if (!purchasableFilterEl) return;
     if (!displayKeys.purchasable) {
       purchasableFilterEl.value = "";
       purchasableFilterEl.disabled = true;
-      purchasableFilterEl.options[0].textContent = "Purchasable column unavailable";
+      if (purchasableFilterEl.options.length) purchasableFilterEl.options[0].textContent = "Purchasable column unavailable";
+      updatePurchasableWarning();
       return;
     }
-    purchasableFilterEl.disabled = false;
-    purchasableFilterEl.options[0].textContent = "All items";
+    if (purchasableFilterEl.options.length) purchasableFilterEl.options[0].textContent = "Player Purchasable";
+    if (!isDmMode) {
+      purchasableFilterEl.value = "yes";
+      purchasableFilterEl.disabled = true;
+    } else {
+      purchasableFilterEl.disabled = false;
+      if (purchasableFilterEl.value !== "yes" && purchasableFilterEl.value !== "no" && purchasableFilterEl.value !== "") {
+        purchasableFilterEl.value = defaultPurchasableFilterValue();
+      }
+    }
+    updatePurchasableWarning();
   }
 
   function makeLinkEl(url, label) {
@@ -920,8 +957,13 @@
     });
   }
   if (purchasableFilterEl) {
+    purchasableFilterEl.value = defaultPurchasableFilterValue();
+    purchasableFilterEl.disabled = !isDmMode;
+    updatePurchasableWarning();
     purchasableFilterEl.addEventListener("change", function () {
+      if (!isDmMode) purchasableFilterEl.value = "yes";
       page = 1;
+      updatePurchasableWarning();
       renderTable();
     });
   }

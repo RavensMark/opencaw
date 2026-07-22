@@ -303,11 +303,20 @@
                     <option value="">All types</option>
                   </select>
                 </label>
+                <label class="field loot-filter-field">
+                  <span>Purchasables</span>
+                  <select id="loot-purchasable-filter">
+                    <option value="yes">Player Purchasable</option>
+                    <option value="no">DM Loot</option>
+                    <option value="">All items</option>
+                  </select>
+                </label>
                 <label class="field loot-filter-field loot-filter-toggle" for="loot-granular-filters">
                   <span>Granular Filters</span>
                   <input type="checkbox" id="loot-granular-filters" />
                 </label>
               </div>
+              <p id="loot-purchasable-warning" class="alert warning loot-purchasable-warning" hidden>Homebrew items are not usually purchassable</p>
               <div id="loot-status" class="loot-status" role="status" aria-live="polite"></div>
               <div id="loot-error" class="alert error" hidden></div>
             </div>
