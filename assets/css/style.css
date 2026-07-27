@@ -744,6 +744,45 @@ body.tab-wide main {
   color: var(--parchment);
 }
 
+.footer-egg-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 0.35rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  line-height: 1;
+  cursor: pointer;
+  transform-origin: center;
+  transition: transform 0.15s ease, filter 0.15s ease;
+}
+
+.footer-egg-btn:hover,
+.footer-egg-btn:focus-visible {
+  transform: translateY(-1px) scale(1.16) rotate(-8deg);
+  filter: drop-shadow(0 0 8px rgba(201, 162, 39, 0.75));
+  outline: none;
+}
+
+.emoji-rain {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.emoji-rain-drop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  font-size: 1.65rem;
+  will-change: transform, opacity;
+}
+
 small {
   font-size: 0.85em;
   opacity: 0.9;
