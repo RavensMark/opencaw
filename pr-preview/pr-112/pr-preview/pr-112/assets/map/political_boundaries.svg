@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="50 40 920 1660" width="100%" height="100%" role="img" aria-label="Political boundary overlay">
+  <defs>
+    <style>
+      .realm { fill-opacity: 0.22; stroke-width: 3.5; stroke-linejoin: round; stroke-linecap: round; }
+      .realm-label { font: 700 28px 'Cinzel', Georgia, serif; letter-spacing: 1.5px; paint-order: stroke; stroke: rgba(24, 15, 10, 0.65); stroke-width: 5px; stroke-linejoin: round; }
+    </style>
+  </defs>
+  <g id="political-boundaries" fill="none">
+    <path class="realm" id="realm-mareauk" d="M338 58 C415 34 524 48 571 108 C607 155 584 228 531 285 C482 338 393 341 349 281 C302 217 283 96 338 58 Z" fill="#7554b8" stroke="#a98eff"/>
+    <path class="realm" id="realm-lithosphere" d="M412 330 C511 285 651 323 724 442 C807 577 771 737 656 865 C547 863 453 819 391 735 C330 651 325 436 412 330 Z" fill="#d0a33a" stroke="#ffd979"/>
+    <path class="realm" id="realm-vershnila" d="M660 397 C781 381 891 482 917 650 C946 836 871 1044 739 1122 C677 1041 643 944 646 848 C756 731 789 571 660 397 Z" fill="#4c8ecb" stroke="#8fd4ff"/>
+    <path class="realm" id="realm-avia" d="M318 834 C438 771 583 810 678 910 C746 981 772 1102 728 1209 C655 1298 536 1325 418 1270 C317 1223 260 1110 267 986 C270 927 286 879 318 834 Z" fill="#57a464" stroke="#9aefaa"/>
+    <path class="realm" id="realm-efriqo" d="M579 1112 C696 1085 828 1132 892 1233 C957 1335 936 1490 832 1581 C729 1671 581 1666 482 1578 C537 1476 554 1299 579 1112 Z" fill="#d46a3b" stroke="#ffb17f"/>
+    <path class="realm" id="realm-asetria" d="M148 1283 C254 1203 415 1222 508 1335 C588 1432 575 1577 487 1654 C388 1739 220 1705 138 1584 C69 1481 71 1342 148 1283 Z" fill="#b84862" stroke="#ff91a8"/>
+    <path class="realm" id="realm-savara" d="M744 1397 C815 1377 903 1403 938 1465 C974 1529 951 1630 876 1680 C801 1730 704 1709 667 1638 C629 1568 669 1420 744 1397 Z" fill="#8f6b2d" stroke="#ffd08a"/>
+  </g>
+</svg>
