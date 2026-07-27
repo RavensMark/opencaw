@@ -18,6 +18,8 @@
   var toggleCommon = document.getElementById('map-toggle-common');
   var toggleDraconic = document.getElementById('map-toggle-draconic');
   var toggleWiki = document.getElementById('map-toggle-wiki');
+  var eslariRouteBtn = document.getElementById('map-route-eslari');
+  var zakharaRouteBtn = document.getElementById('map-route-zakhara');
 
   if (!viewport || !stage || !image || !markerLayer) return;
 
@@ -230,7 +232,7 @@
   }
 
   viewport.addEventListener('pointerdown', function (event) {
-    if (event.target.closest('.map-marker')) return;
+    if (event.target.closest('.map-marker') || event.target.closest('.map-route-arrow')) return;
     state.dragging = true;
     state.startX = event.clientX;
     state.startY = event.clientY;
@@ -280,6 +282,12 @@
   resetBtn.addEventListener('click', function () { loadMap(state.map, true); });
   zoomInBtn.addEventListener('click', function () { zoom(0.15); });
   zoomOutBtn.addEventListener('click', function () { zoom(-0.15); });
+  [eslariRouteBtn, zakharaRouteBtn].forEach(function (button) {
+    if (!button) return;
+    button.addEventListener('click', function () {
+      window.alert('No Data');
+    });
+  });
   [togglePolitical, toggleCommon, toggleDraconic, toggleWiki].forEach(function (toggle) {
     if (!toggle) return;
     toggle.addEventListener('change', setOverlayVisibility);

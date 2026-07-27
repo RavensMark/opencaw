@@ -1937,6 +1937,42 @@ small {
   inset: 0;
 }
 
+
+.map-route-arrow {
+  position: absolute;
+  top: 50%;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transform: translateY(-50%);
+  border: 1px solid rgba(201, 162, 39, 0.65);
+  border-radius: 999px;
+  padding: 0.45rem 0.8rem;
+  background: rgba(12, 10, 15, 0.78);
+  color: var(--parchment);
+  font: 700 1rem "EB Garamond", Georgia, serif;
+  box-shadow: 0 0 24px rgba(201, 162, 39, 0.3);
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.map-route-arrow-left {
+  left: 0.9rem;
+}
+
+.map-route-arrow-right {
+  right: 0.9rem;
+}
+
+.map-route-arrow:hover,
+.map-route-arrow:focus-visible {
+  background: linear-gradient(180deg, var(--gold), #a6841c);
+  border-color: var(--gold);
+  color: var(--ink);
+  outline: none;
+}
+
 .map-marker {
   position: absolute;
   display: inline-flex;
