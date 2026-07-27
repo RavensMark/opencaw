@@ -11,6 +11,15 @@
   var resetBtn = document.getElementById('map-reset');
   var zoomInBtn = document.getElementById('map-zoom-in');
   var zoomOutBtn = document.getElementById('map-zoom-out');
+  var overlayPolitical = document.getElementById('map-overlay-political');
+  var overlayCommon = document.getElementById('map-overlay-common');
+  var overlayDraconic = document.getElementById('map-overlay-draconic');
+  var togglePolitical = document.getElementById('map-toggle-political');
+  var toggleCommon = document.getElementById('map-toggle-common');
+  var toggleDraconic = document.getElementById('map-toggle-draconic');
+  var toggleWiki = document.getElementById('map-toggle-wiki');
+  var eslariRouteBtn = document.getElementById('map-route-eslari');
+  var zakharaRouteBtn = document.getElementById('map-route-zakhara');
 
   if (!viewport || !stage || !image || !markerLayer) return;
 
@@ -23,17 +32,17 @@
   var maps = {
     world: {
       name: "Raven's Mark World",
-      src: 'assets/img/ravensmark-world-map.webp',
+      src: 'assets/map/map.svg',
       alt: "Raven's Mark world map",
-      width: 2500,
-      height: 4444,
-      defaultView: { x: -80, y: -760, scale: 0.8 },
+      width: 1840,
+      height: 3320,
+      defaultView: { x: -348, y: -924, scale: 0.8 },
       markers: [
         {
           id: 'avia',
           label: 'Avia',
-          x: 43,
-          y: 73.4,
+          x: 46.5,
+          y: 61.7,
           type: 'link',
           url: wikiUrl('Avia'),
           description: 'Open the Raven\'s Mark wiki page for Avia in a new tab.'
@@ -41,8 +50,8 @@
         {
           id: 'asetria',
           label: 'Asetria',
-          x: 22.2,
-          y: 79.4,
+          x: 36.1,
+          y: 64.7,
           type: 'map',
           target: 'asetria',
           url: wikiUrl('Asetria'),
@@ -51,8 +60,8 @@
         {
           id: 'efriqo',
           label: 'Confederacy of Efriqo',
-          x: 62,
-          y: 75,
+          x: 56,
+          y: 62.5,
           type: 'link',
           url: wikiUrl('Efriqo'),
           description: 'Open the wiki page for Efriqo in a new tab.'
@@ -60,8 +69,8 @@
         {
           id: 'vershnila',
           label: 'K. of Vershnila',
-          x: 78.2,
-          y: 50.8,
+          x: 64.1,
+          y: 50.4,
           type: 'link',
           url: wikiUrl('Vershnila'),
           description: 'Open the wiki page for Vershnila in a new tab.'
@@ -69,8 +78,8 @@
         {
           id: 'lithosphere',
           label: 'K. of Lithosphere',
-          x: 54.2,
-          y: 53.1,
+          x: 52.1,
+          y: 51.55,
           type: 'link',
           url: wikiUrl('Lithosphere'),
           description: 'Open the wiki page for Lithosphere in a new tab.'
@@ -78,8 +87,8 @@
         {
           id: 'savara',
           label: "Free State of Sa'vara",
-          x: 82.8,
-          y: 86.3,
+          x: 66.4,
+          y: 68.15,
           type: 'link',
           url: wikiUrl('Free_State_of_Sa%27vara'),
           description: "Open the wiki page for the Free State of Sa'vara in a new tab."
@@ -88,17 +97,17 @@
     },
     asetria: {
       name: 'Asetria Regional Map',
-      src: 'assets/img/ravensmark-world-map.webp',
+      src: 'assets/map/map.svg',
       alt: 'Asetria regional view on the Raven\'s Mark world map',
-      width: 2500,
-      height: 4444,
-      defaultView: { x: -80, y: -3000, scale: 1.1 },
+      width: 1840,
+      height: 3320,
+      defaultView: { x: -626, y: -2093, scale: 1.1 },
       markers: [
         {
           id: 'asetria-wiki',
           label: 'Asetria',
-          x: 22.2,
-          y: 94.4,
+          x: 36.1,
+          y: 72.2,
           type: 'link',
           url: wikiUrl('Asetria'),
           description: 'Open the Asetria wiki page in a new tab.'
@@ -106,8 +115,8 @@
         {
           id: 'dichaea',
           label: 'Dichaea',
-          x: 15.4,
-          y: 91.8,
+          x: 32.7,
+          y: 70.9,
           type: 'link',
           url: wikiUrl('Dichaea'),
           description: 'Open the Dichaea wiki page in a new tab.'
@@ -115,8 +124,8 @@
         {
           id: 'return-world',
           label: 'Return to World',
-          x: 31.5,
-          y: 89.5,
+          x: 40.75,
+          y: 69.75,
           type: 'map',
           target: 'world',
           description: "Return to the Raven's Mark world map."
@@ -125,7 +134,7 @@
     }
   };
 
-  var state = { map: 'world', x: 0, y: 0, scale: 1, dragging: false, startX: 0, startY: 0, originX: 0, originY: 0 };
+  var state = { map: 'world', x: 0, y: 0, scale: 1, dragging: false, startX: 0, startY: 0, originX: 0, originY: 0, showWiki: true };
 
   function clampScale(value) {
     return Math.min(2.4, Math.max(0.45, value));
@@ -138,6 +147,8 @@
   function renderMarkers() {
     var config = maps[state.map];
     markerLayer.innerHTML = '';
+    markerLayer.hidden = !state.showWiki;
+    if (!state.showWiki) return;
     config.markers.forEach(function (marker) {
       var btn = document.createElement('button');
       btn.type = 'button';
@@ -158,6 +169,14 @@
     title.textContent = 'Select a point of interest';
     body.textContent = 'Markers can open a sub-map, or show a link that opens in a new browser tab.';
     actions.innerHTML = '';
+  }
+
+  function setOverlayVisibility() {
+    if (overlayPolitical && togglePolitical) overlayPolitical.hidden = !togglePolitical.checked;
+    if (overlayCommon && toggleCommon) overlayCommon.hidden = !toggleCommon.checked;
+    if (overlayDraconic && toggleDraconic) overlayDraconic.hidden = !toggleDraconic.checked;
+    state.showWiki = !toggleWiki || toggleWiki.checked;
+    renderMarkers();
   }
 
   function loadMap(name, keepInfo) {
@@ -213,7 +232,7 @@
   }
 
   viewport.addEventListener('pointerdown', function (event) {
-    if (event.target.closest('.map-marker')) return;
+    if (event.target.closest('.map-marker') || event.target.closest('.map-route-arrow')) return;
     state.dragging = true;
     state.startX = event.clientX;
     state.startY = event.clientY;
@@ -263,6 +282,17 @@
   resetBtn.addEventListener('click', function () { loadMap(state.map, true); });
   zoomInBtn.addEventListener('click', function () { zoom(0.15); });
   zoomOutBtn.addEventListener('click', function () { zoom(-0.15); });
+  [eslariRouteBtn, zakharaRouteBtn].forEach(function (button) {
+    if (!button) return;
+    button.addEventListener('click', function () {
+      window.alert('No Data');
+    });
+  });
+  [togglePolitical, toggleCommon, toggleDraconic, toggleWiki].forEach(function (toggle) {
+    if (!toggle) return;
+    toggle.addEventListener('change', setOverlayVisibility);
+  });
 
   loadMap('world');
+  setOverlayVisibility();
 })();

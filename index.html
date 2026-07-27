@@ -824,7 +824,7 @@
         <header class="panel-head">
           <h2>World Map</h2>
           <p style="color:red">This App is under construction. It may not work, may be removed, etc. Use at your own risk.</p>
-          <p class="lede">Drag to pan around the map. Click a glowing point of interest to open a regional sub-map or reveal a wiki link.</p>
+          <p class="lede">Drag to pan around the map. Click a glowing point of interest to open a regional sub-map or reveal a wiki link. Toggle map overlays to compare borders, labels, and wiki links.</p>
         </header>
         <div class="card map-card">
           <div class="map-toolbar" aria-label="Map controls">
@@ -838,13 +838,28 @@
               <button type="button" class="btn" id="map-zoom-in" aria-label="Zoom in">+</button>
               <button type="button" class="btn" id="map-reset">Reset View</button>
             </div>
+            <div class="map-layer-controls" aria-label="Map layer toggles">
+              <label><input type="checkbox" id="map-toggle-political" checked /> Political boundaries</label>
+              <label><input type="checkbox" id="map-toggle-common" checked /> Common placenames</label>
+              <label><input type="checkbox" id="map-toggle-draconic" /> Draconic placenames</label>
+              <label><input type="checkbox" id="map-toggle-wiki" checked /> Wiki links</label>
+            </div>
           </div>
           <div class="map-layout">
             <div class="map-viewport" id="map-viewport" tabindex="0" aria-label="Interactive Raven's Mark map. Drag to pan and select markers for points of interest.">
               <div class="map-stage" id="map-stage">
-                <img id="map-image" class="map-image" src="assets/img/ravensmark-world-map.webp" alt="Raven's Mark world map" draggable="false" />
+                <img id="map-image" class="map-image" src="assets/map/map.svg" alt="Raven's Mark world map" draggable="false" />
+                <img id="map-overlay-political" class="map-overlay" src="assets/map/political_boundaries.svg" alt="" aria-hidden="true" draggable="false" />
+                <img id="map-overlay-common" class="map-overlay" src="assets/map/placenames_common.svg" alt="" aria-hidden="true" draggable="false" />
+                <img id="map-overlay-draconic" class="map-overlay" src="assets/map/placenames_draconic.svg" alt="" aria-hidden="true" draggable="false" hidden />
                 <div id="map-markers" class="map-markers" aria-label="Points of interest"></div>
               </div>
+              <button type="button" class="map-route-arrow map-route-arrow-left" id="map-route-eslari" aria-label="To Eslari">
+                <span aria-hidden="true">←</span> To Eslari
+              </button>
+              <button type="button" class="map-route-arrow map-route-arrow-right" id="map-route-zakhara" aria-label="To Zakhara">
+                To Zakhara <span aria-hidden="true">→</span>
+              </button>
             </div>
             <aside class="map-info" aria-live="polite">
               <h3 id="map-info-title">Select a point of interest</h3>
