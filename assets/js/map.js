@@ -32,15 +32,15 @@
       name: "Raven's Mark World",
       src: 'assets/map/map.svg',
       alt: "Raven's Mark world map",
-      width: 920,
-      height: 1660,
-      defaultView: { x: 20, y: -260, scale: 0.8 },
+      width: 1840,
+      height: 3320,
+      defaultView: { x: -348, y: -924, scale: 0.8 },
       markers: [
         {
           id: 'avia',
           label: 'Avia',
-          x: 43,
-          y: 73.4,
+          x: 46.5,
+          y: 61.7,
           type: 'link',
           url: wikiUrl('Avia'),
           description: 'Open the Raven\'s Mark wiki page for Avia in a new tab.'
@@ -48,8 +48,8 @@
         {
           id: 'asetria',
           label: 'Asetria',
-          x: 22.2,
-          y: 79.4,
+          x: 36.1,
+          y: 64.7,
           type: 'map',
           target: 'asetria',
           url: wikiUrl('Asetria'),
@@ -58,8 +58,8 @@
         {
           id: 'efriqo',
           label: 'Confederacy of Efriqo',
-          x: 62,
-          y: 75,
+          x: 56,
+          y: 62.5,
           type: 'link',
           url: wikiUrl('Efriqo'),
           description: 'Open the wiki page for Efriqo in a new tab.'
@@ -67,8 +67,8 @@
         {
           id: 'vershnila',
           label: 'K. of Vershnila',
-          x: 78.2,
-          y: 50.8,
+          x: 64.1,
+          y: 50.4,
           type: 'link',
           url: wikiUrl('Vershnila'),
           description: 'Open the wiki page for Vershnila in a new tab.'
@@ -76,8 +76,8 @@
         {
           id: 'lithosphere',
           label: 'K. of Lithosphere',
-          x: 54.2,
-          y: 53.1,
+          x: 52.1,
+          y: 51.55,
           type: 'link',
           url: wikiUrl('Lithosphere'),
           description: 'Open the wiki page for Lithosphere in a new tab.'
@@ -85,8 +85,8 @@
         {
           id: 'savara',
           label: "Free State of Sa'vara",
-          x: 82.8,
-          y: 86.3,
+          x: 66.4,
+          y: 68.15,
           type: 'link',
           url: wikiUrl('Free_State_of_Sa%27vara'),
           description: "Open the wiki page for the Free State of Sa'vara in a new tab."
@@ -97,15 +97,15 @@
       name: 'Asetria Regional Map',
       src: 'assets/map/map.svg',
       alt: 'Asetria regional view on the Raven\'s Mark world map',
-      width: 920,
-      height: 1660,
-      defaultView: { x: -120, y: -1180, scale: 1.1 },
+      width: 1840,
+      height: 3320,
+      defaultView: { x: -626, y: -2093, scale: 1.1 },
       markers: [
         {
           id: 'asetria-wiki',
           label: 'Asetria',
-          x: 22.2,
-          y: 94.4,
+          x: 36.1,
+          y: 72.2,
           type: 'link',
           url: wikiUrl('Asetria'),
           description: 'Open the Asetria wiki page in a new tab.'
@@ -113,8 +113,8 @@
         {
           id: 'dichaea',
           label: 'Dichaea',
-          x: 15.4,
-          y: 91.8,
+          x: 32.7,
+          y: 70.9,
           type: 'link',
           url: wikiUrl('Dichaea'),
           description: 'Open the Dichaea wiki page in a new tab.'
@@ -122,8 +122,8 @@
         {
           id: 'return-world',
           label: 'Return to World',
-          x: 31.5,
-          y: 89.5,
+          x: 40.75,
+          y: 69.75,
           type: 'map',
           target: 'world',
           description: "Return to the Raven's Mark world map."
