@@ -3,9 +3,6 @@
   var footerRainButton = document.getElementById('footer-emoji-rain');
   var rainContainer;
   var rainAnimationFrame;
-  var rainStopTimeout;
-  var rainDropTimeouts = [];
-  var isRaining = false;
 
   var rainEmojis = ['🎲', '🐉', '⚔️', '🛡️', '🧝', '🧌', '🧟', '🧛', '🧙‍♂️', '🏹', '🪄', '💎', '🗝️', '🏰', '📜', '🔮', '🐺', '🦉', '🕷️', '🕸️', '🦇', '🐍', '🦂', '🌙', '🔥', '❄️', '⚡', '☠️', '💀', '👁️'];
 
@@ -71,16 +68,10 @@
     this.element.style.opacity = '0';
 
     var drop = this;
-    var dropTimeout = window.setTimeout(function () {
-      if (!isRaining) {
-        return;
-      }
-
+    window.setTimeout(function () {
       createRainContainer().appendChild(drop.element);
       drop.active = true;
     }, delay);
-
-    rainDropTimeouts.push(dropTimeout);
   }
 
   RainDrop.prototype.update = function () {
@@ -101,41 +92,12 @@
     this.element.style.transform = 'translate3d(' + this.x + 'px, ' + this.y + 'px, 0) rotate(' + this.rotation + 'deg)';
   };
 
-  function stopEmojiRain() {
-    isRaining = false;
-
-    if (rainAnimationFrame) {
-      window.cancelAnimationFrame(rainAnimationFrame);
-      rainAnimationFrame = null;
-    }
-
-    if (rainStopTimeout) {
-      window.clearTimeout(rainStopTimeout);
-      rainStopTimeout = null;
-    }
-
-    rainDropTimeouts.forEach(function (timeoutId) {
-      window.clearTimeout(timeoutId);
-    });
-    rainDropTimeouts = [];
-
-    if (rainContainer) {
-      rainContainer.remove();
-      rainContainer = null;
-    }
-
-    if (footerRainButton) {
-      footerRainButton.setAttribute('aria-pressed', 'false');
-    }
-  }
-
   function startEmojiRain() {
     var container = createRainContainer();
     container.textContent = '';
-    isRaining = true;
 
-    if (footerRainButton) {
-      footerRainButton.setAttribute('aria-pressed', 'true');
+    if (rainAnimationFrame) {
+      window.cancelAnimationFrame(rainAnimationFrame);
     }
 
     var circles = [];
@@ -149,10 +111,6 @@
     }
 
     function animate() {
-      if (!isRaining) {
-        return;
-      }
-
       circles.forEach(function (circle) {
         circle.update();
       });
@@ -161,16 +119,12 @@
 
     animate();
 
-    rainStopTimeout = window.setTimeout(stopEmojiRain, 8500);
-  }
-
-  function toggleEmojiRain() {
-    if (isRaining) {
-      stopEmojiRain();
-      return;
-    }
-
-    startEmojiRain();
+    window.setTimeout(function () {
+      window.cancelAnimationFrame(rainAnimationFrame);
+      rainAnimationFrame = null;
+      container.remove();
+      rainContainer = null;
+    }, 8500);
   }
 
   if (brandBlastButton) {
@@ -178,7 +132,6 @@
   }
 
   if (footerRainButton) {
-    footerRainButton.setAttribute('aria-pressed', 'false');
-    footerRainButton.addEventListener('click', toggleEmojiRain);
+    footerRainButton.addEventListener('click', startEmojiRain);
   }
 })();
