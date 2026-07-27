@@ -11,6 +11,13 @@
   var resetBtn = document.getElementById('map-reset');
   var zoomInBtn = document.getElementById('map-zoom-in');
   var zoomOutBtn = document.getElementById('map-zoom-out');
+  var overlayPolitical = document.getElementById('map-overlay-political');
+  var overlayCommon = document.getElementById('map-overlay-common');
+  var overlayDraconic = document.getElementById('map-overlay-draconic');
+  var togglePolitical = document.getElementById('map-toggle-political');
+  var toggleCommon = document.getElementById('map-toggle-common');
+  var toggleDraconic = document.getElementById('map-toggle-draconic');
+  var toggleWiki = document.getElementById('map-toggle-wiki');
 
   if (!viewport || !stage || !image || !markerLayer) return;
 
@@ -23,11 +30,11 @@
   var maps = {
     world: {
       name: "Raven's Mark World",
-      src: 'assets/img/ravensmark-world-map.webp',
+      src: 'assets/map/map.svg',
       alt: "Raven's Mark world map",
-      width: 2500,
-      height: 4444,
-      defaultView: { x: -80, y: -760, scale: 0.8 },
+      width: 920,
+      height: 1660,
+      defaultView: { x: 20, y: -260, scale: 0.8 },
       markers: [
         {
           id: 'avia',
@@ -88,11 +95,11 @@
     },
     asetria: {
       name: 'Asetria Regional Map',
-      src: 'assets/img/ravensmark-world-map.webp',
+      src: 'assets/map/map.svg',
       alt: 'Asetria regional view on the Raven\'s Mark world map',
-      width: 2500,
-      height: 4444,
-      defaultView: { x: -80, y: -3000, scale: 1.1 },
+      width: 920,
+      height: 1660,
+      defaultView: { x: -120, y: -1180, scale: 1.1 },
       markers: [
         {
           id: 'asetria-wiki',
@@ -125,7 +132,7 @@
     }
   };
 
-  var state = { map: 'world', x: 0, y: 0, scale: 1, dragging: false, startX: 0, startY: 0, originX: 0, originY: 0 };
+  var state = { map: 'world', x: 0, y: 0, scale: 1, dragging: false, startX: 0, startY: 0, originX: 0, originY: 0, showWiki: true };
 
   function clampScale(value) {
     return Math.min(2.4, Math.max(0.45, value));
@@ -138,6 +145,8 @@
   function renderMarkers() {
     var config = maps[state.map];
     markerLayer.innerHTML = '';
+    markerLayer.hidden = !state.showWiki;
+    if (!state.showWiki) return;
     config.markers.forEach(function (marker) {
       var btn = document.createElement('button');
       btn.type = 'button';
@@ -158,6 +167,14 @@
     title.textContent = 'Select a point of interest';
     body.textContent = 'Markers can open a sub-map, or show a link that opens in a new browser tab.';
     actions.innerHTML = '';
+  }
+
+  function setOverlayVisibility() {
+    if (overlayPolitical && togglePolitical) overlayPolitical.hidden = !togglePolitical.checked;
+    if (overlayCommon && toggleCommon) overlayCommon.hidden = !toggleCommon.checked;
+    if (overlayDraconic && toggleDraconic) overlayDraconic.hidden = !toggleDraconic.checked;
+    state.showWiki = !toggleWiki || toggleWiki.checked;
+    renderMarkers();
   }
 
   function loadMap(name, keepInfo) {
@@ -263,6 +280,11 @@
   resetBtn.addEventListener('click', function () { loadMap(state.map, true); });
   zoomInBtn.addEventListener('click', function () { zoom(0.15); });
   zoomOutBtn.addEventListener('click', function () { zoom(-0.15); });
+  [togglePolitical, toggleCommon, toggleDraconic, toggleWiki].forEach(function (toggle) {
+    if (!toggle) return;
+    toggle.addEventListener('change', setOverlayVisibility);
+  });
 
   loadMap('world');
+  setOverlayVisibility();
 })();

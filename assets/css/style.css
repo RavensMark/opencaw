@@ -1853,10 +1853,24 @@ small {
 }
 
 .map-actions,
-.map-info-actions {
+.map-info-actions,
+.map-layer-controls {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
+}
+
+.map-layer-controls {
+  flex-basis: 100%;
+  align-items: center;
+  color: var(--parchment-muted);
+  font-size: 0.95rem;
+}
+
+.map-layer-controls label {
+  display: inline-flex;
+  gap: 0.35rem;
+  align-items: center;
 }
 
 .map-layout {
@@ -1900,11 +1914,22 @@ small {
   will-change: transform;
 }
 
-.map-image {
+.map-image,
+.map-overlay {
   display: block;
   width: 100%;
   height: 100%;
   pointer-events: none;
+}
+
+.map-overlay {
+  position: absolute;
+  inset: 0;
+}
+
+.map-overlay[hidden],
+.map-markers[hidden] {
+  display: none;
 }
 
 .map-markers {

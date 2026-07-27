@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="50 40 920 1660" width="100%" height="100%" role="img" aria-label="Common placenames overlay">
+  <defs>
+    <style>
+      text { font-family: 'Cinzel', Georgia, serif; font-weight: 700; fill: #2f2417; paint-order: stroke; stroke: rgba(239, 217, 168, 0.85); stroke-width: 6px; stroke-linejoin: round; }
+      .major { font-size: 36px; letter-spacing: 2px; }
+      .minor { font-size: 25px; letter-spacing: 1px; }
+    </style>
+  </defs>
+  <g id="placenames-common">
+    <text class="minor" x="365" y="205">Mareauk</text>
+    <text class="major" x="433" y="606">Lithosphere</text>
+    <text class="major" x="696" y="708" transform="rotate(16 696 708)">Vershnila</text>
+    <text class="major" x="377" y="1039">Avia</text>
+    <text class="major" x="598" y="1394" transform="rotate(10 598 1394)">Efriqo</text>
+    <text class="major" x="184" y="1486" transform="rotate(-7 184 1486)">Asetria</text>
+    <text class="minor" x="720" y="1550">Sa'vara</text>
+  </g>
+</svg>
