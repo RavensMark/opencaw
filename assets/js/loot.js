@@ -31,6 +31,7 @@
   var headers = [];
   var costKey = "";
   var budgetFiltered = [];
+  var unfilteredResultCount = 0;
   var page = 1;
   var cart = {};
   var nameKey = "";
@@ -510,6 +511,37 @@
     container.appendChild(row);
   }
 
+
+  function activeDisplayFilters() {
+    var filters = [];
+    var nameFilter = nameFilterEl ? String(nameFilterEl.value || "").trim() : "";
+    var typeFilter = typeFilterEl ? String(typeFilterEl.value || "").trim() : "";
+    var purchasableFilter = purchasableFilterEl ? String(purchasableFilterEl.value || "").trim().toLowerCase() : "";
+
+    if (nameFilter) filters.push('name contains "' + nameFilter + '"');
+    if (typeFilter) filters.push('type is "' + typeFilter + '"');
+    if (purchasableFilter === "yes") filters.push("player purchasable");
+    else if (purchasableFilter === "no") filters.push("not player purchasable");
+
+    return filters;
+  }
+
+  function resultCountLabel(filteredCount) {
+    var filters = activeDisplayFilters();
+    var baseCount = unfilteredResultCount || budgetFiltered.length;
+    if (!filters.length) return filteredCount + " item" + (filteredCount === 1 ? "" : "s");
+    return (
+      filteredCount +
+      " filtered item" +
+      (filteredCount === 1 ? "" : "s") +
+      " (from " +
+      baseCount +
+      " item" +
+      (baseCount === 1 ? "" : "s") +
+      ")"
+    );
+  }
+
   function totalPages(n) {
     return Math.max(1, Math.ceil(n / PAGE_SIZE));
   }
@@ -675,15 +707,17 @@
       tbody.appendChild(detailTr);
     }
 
-    pagEl.hidden = data.length === 0;
-    if (!pagEl.hidden) {
+    pagEl.hidden = false;
+    if (!data.length) {
+      pagEl.innerHTML = '<div class="loot-pag-info">Showing 0 of ' + resultCountLabel(0) + '</div>';
+    } else {
       pagEl.innerHTML =
         '<div class="loot-pag-info">Showing ' +
-        (data.length ? start + 1 : 0) +
+        (start + 1) +
         "–" +
         Math.min(start + PAGE_SIZE, data.length) +
         " of " +
-        data.length +
+        resultCountLabel(data.length) +
         '</div><div class="loot-pag-buttons">' +
         '<button type="button" class="btn ghost" id="loot-pag-prev">Previous</button>' +
         '<span class="loot-pag-meta">Page ' +
@@ -909,6 +943,7 @@
           return showAll || c <= budget;
         });
         budgetFiltered = sheetRows.concat(avraeRows);
+        unfilteredResultCount = budgetFiltered.length;
         setupDisplayKeys();
         expandedRows = {};
         page = 1;
