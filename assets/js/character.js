@@ -147,7 +147,7 @@
       '- [' + checkMark('cc-check-potion') + '] Taken Potion',
       equipmentChoiceLine(),
       '- [' + checkMark('cc-check-backstory') + '] Rough Backstory',
-      '- [' + checkMark('cc-check-initial-xp') + '] Added initial experience to `!xp` command'
+      '- [' + checkMark('cc-check-initial-xp') + '] Added initial quest points to `!xp` command'
     ].join('\n');
   }
 

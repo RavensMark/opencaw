@@ -275,13 +275,19 @@
     return ["!boopsum", String(totalXp)].concat(levels).join(" ");
   }
 
-  function lootLogMarkdown(xpEach, gpEachArr, party, questTypeLabel, effortLabel) {
+  function questPointsForAPL(apl) {
+    if (apl >= 5 && apl <= 12) return "20-35";
+    if (apl < 15) return "35-50";
+    return "35-50 or Milestone";
+  }
+
+  function lootLogMarkdown(qpEach, gpEachArr, party, questTypeLabel, effortLabel) {
     var characters = party.map(function (p) {
       return p.character || "—";
     });
     return [
       "@Role (" + characters.join(", ") + ")",
-      "**XP:** " + String(xpEach) + "xp each",
+      "**QP:** " + String(qpEach) + " qp each",
       "**Gold:** " + fmtList(gpEachArr),
       "**Loot:** To Be Determined"
     ].join("\n");
@@ -332,7 +338,7 @@
     lootNoteEl.textContent = questType.givesGold
       ? (questType.givesItems ? "Gold and item loot are both awarded for this quest type." : "Gold is awarded; no item loot pool for this quest type.")
       : "No gold or item loot is awarded for this quest type.";
-    lootLogEl.textContent = lootLogMarkdown(state.playerXp, questType.givesGold ? gpByPlayer : [0], state.party, questType.label, effort.label);
+    lootLogEl.textContent = lootLogMarkdown(state.playerQP, questType.givesGold ? gpByPlayer : [0], state.party, questType.label, effort.label);
   }
 
   calcBtn.addEventListener("click", function () {
@@ -370,7 +376,8 @@
     document.getElementById("out-levels").textContent = fmtList(LText);
     document.getElementById("out-apl").textContent = String(APL);
     document.getElementById("out-totalxp").textContent = String(totalXp);
-    document.getElementById("out-xp-each").textContent = String(PlayerXP);
+    var playerQP = questPointsForAPL(APL);
+    document.getElementById("out-xp-each").textContent = playerQP;
     document.getElementById("out-quest-type").textContent = questType.label;
 
     boopsumCommandEl.textContent = boopsumCommand(totalXp, party);
@@ -379,6 +386,7 @@
       party: party,
       partyLevels: PArr,
       playerXp: PlayerXP,
+      playerQP: playerQP,
       questTypeValue: questTypeInput.value
     };
     renderLootForState(lastCalcState);
