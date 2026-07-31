@@ -392,38 +392,6 @@ body.tab-wide main {
   accent-color: var(--gold);
 }
 
-.boopsum-slider-wrap {
-  display: flex;
-  flex-direction: column;
-  gap: 0.35rem;
-}
-
-#quest-tuning {
-  width: 100%;
-  accent-color: var(--gold);
-}
-
-.boopsum-slider-labels {
-  display: flex;
-  justify-content: space-between;
-  gap: 0.5rem;
-  font-size: 0.78rem;
-  color: var(--parchment-muted);
-}
-
-
-.boopsum-precise-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.45rem;
-  font-size: 0.9rem;
-  color: var(--parchment);
-}
-
-.boopsum-precise-toggle input[type="checkbox"] {
-  accent-color: var(--gold);
-}
-
 .field select {
   appearance: none;
   -webkit-appearance: none;
