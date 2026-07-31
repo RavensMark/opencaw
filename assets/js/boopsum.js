@@ -1,6 +1,6 @@
 (function () {
   var HalfProf = [0, 1, 1, 1, 1, 1.5, 1.5, 1.5, 1.5, 2, 2, 2, 2, 2.5, 2.5, 2.5, 2.5, 3, 3, 3, 3];
-  var DMod = [0.5, 0.75, 1];
+  var STANDARD_EFFORT_MOD = 0.75;
   var GPMod = [0, 0.1, 0.1, 0.1, 0.1, 0.25, 0.25, 0.25, 0.25, 0.55, 0.55, 0.55, 0.55, 0.8, 0.8, 0.8, 0.8, 1.05, 1.05, 1.05, 1.05];
 
   var MAX_IDX = HalfProf.length - 1;
@@ -33,8 +33,6 @@
   var lootLogEl = document.getElementById("out-loot-log");
   var itemLootWrapEl = document.getElementById("out-itemloot-wrap");
   var lootNoteEl = document.getElementById("out-loot-note");
-  var questTuningEl = document.getElementById("quest-tuning");
-  var questTuningPreciseEl = document.getElementById("quest-tuning-precise");
   var lastCalcState = null;
   var PARTY_NAMES_KEY = "opencaw-boopsum-names-v1";
   var nameCache = { pairs: {} };
@@ -101,11 +99,7 @@
   nameCache = loadNameCache();
   refreshDatalists();
 
-  var EFFORT_LEVELS = [
-    { key: "quick", label: "Quick / low-interaction", mod: DMod[0] },
-    { key: "standard", label: "Standard", mod: DMod[1] },
-    { key: "lore", label: "Lore / high-interaction", mod: DMod[2] }
-  ];
+  var STANDARD_EFFORT_MOD = DMod[1];
 
   var QUEST_TYPES = {
     graveyard: { label: "Graveyard", givesGold: false, givesItems: false },
@@ -281,7 +275,7 @@
     return "35-50 or Milestone";
   }
 
-  function lootLogMarkdown(qpEach, gpEachArr, party, questTypeLabel, effortLabel) {
+  function lootLogMarkdown(qpEach, gpEachArr, party) {
     var characters = party.map(function (p) {
       return p.character || "—";
     });
@@ -297,48 +291,23 @@
     return form.querySelector('input[name="questType"]:checked');
   }
 
-  function getEffortState() {
-    var raw = Number(questTuningEl && questTuningEl.value);
-    if (!Number.isFinite(raw)) raw = 1;
-    var clamped = Math.min(Math.max(raw, 0), EFFORT_LEVELS.length - 1);
-    var preciseEnabled = !!(questTuningPreciseEl && questTuningPreciseEl.checked);
-    if (!preciseEnabled) {
-      var effortIdx = Math.min(Math.max(Math.floor(clamped), 0), EFFORT_LEVELS.length - 1);
-      return { label: EFFORT_LEVELS[effortIdx].label, mod: EFFORT_LEVELS[effortIdx].mod };
-    }
-
-    var lowIdx = Math.floor(clamped);
-    var highIdx = Math.min(lowIdx + 1, EFFORT_LEVELS.length - 1);
-    var ratio = clamped - lowIdx;
-    var low = EFFORT_LEVELS[lowIdx];
-    var high = EFFORT_LEVELS[highIdx];
-    var blended = low.mod + (high.mod - low.mod) * ratio;
-    var label = lowIdx === highIdx
-      ? low.label + ' (Precise Tweaking)'
-      : low.label + ' → ' + high.label + ' (' + Math.round(ratio * 100) + '%)';
-
-    return { label: label, mod: blended };
-  }
-
   function renderLootForState(state) {
     if (!state) return;
-    var effort = getEffortState();
     var questType = QUEST_TYPES[state.questTypeValue];
     var gpByPlayer = state.partyLevels.map(function (x) {
-      return Math.floor((state.playerXp / HalfProf[x]) * effort.mod * GPMod[x]);
+      return Math.floor((state.playerXp / HalfProf[x]) * STANDARD_EFFORT_MOD * GPMod[x]);
     });
     var itemLoot = gpByPlayer.reduce(function (a, b) {
       return a + b;
     }, 0);
 
-    document.getElementById("out-effort-level").textContent = effort.label;
     document.getElementById("out-gp-selected").textContent = questType.givesGold ? fmtList(gpByPlayer) : "0";
     document.getElementById("out-itemloot").textContent = questType.givesItems ? String(itemLoot) : "0";
     itemLootWrapEl.hidden = !questType.givesItems;
     lootNoteEl.textContent = questType.givesGold
       ? (questType.givesItems ? "Gold and item loot are both awarded for this quest type." : "Gold is awarded; no item loot pool for this quest type.")
       : "No gold or item loot is awarded for this quest type.";
-    lootLogEl.textContent = lootLogMarkdown(state.playerQP, questType.givesGold ? gpByPlayer : [0], state.party, questType.label, effort.label);
+    lootLogEl.textContent = lootLogMarkdown(state.playerQP, questType.givesGold ? gpByPlayer : [0], state.party);
   }
 
   calcBtn.addEventListener("click", function () {
@@ -394,20 +363,4 @@
 
     resEl.hidden = false;
   });
-
-  if (questTuningEl) {
-    questTuningEl.addEventListener("input", function () {
-      renderLootForState(lastCalcState);
-    });
-  }
-
-  if (questTuningPreciseEl && questTuningEl) {
-    questTuningPreciseEl.addEventListener("change", function () {
-      questTuningEl.step = questTuningPreciseEl.checked ? "0.01" : "1";
-      if (!questTuningPreciseEl.checked) {
-        questTuningEl.value = String(Math.round(Number(questTuningEl.value) || 1));
-      }
-      renderLootForState(lastCalcState);
-    });
-  }
 })();
