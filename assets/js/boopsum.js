@@ -99,8 +99,6 @@
   nameCache = loadNameCache();
   refreshDatalists();
 
-  var STANDARD_EFFORT_MOD = DMod[1];
-
   var QUEST_TYPES = {
     graveyard: { label: "Graveyard", givesGold: false, givesItems: false },
     hunt: { label: "Hunt", givesGold: true, givesItems: false },
