@@ -215,41 +215,11 @@
           <p><span id="out-nparty"></span> players: <span id="out-levels"></span> <span class="muted">(Avg: <span id="out-apl"></span>)</span></p>
           <p><strong>Total XP:</strong> <span id="out-totalxp"></span></p>
 
-          <h4>Experience</h4>
-          <p><strong>XP Each:</strong> <span id="out-xp-each"></span></p>
+          <h4>Quest Points</h4>
+          <p><strong>QP Each:</strong> <span id="out-xp-each"></span></p>
           
           <h4>Loot</h4>
-          <label class="field">
-            <span>Quest tuning</span>
-            <div class="boopsum-slider-wrap">
-              <input
-                type="range"
-                name="questTuning"
-                id="quest-tuning"
-                min="0"
-                max="2"
-                step="1"
-                value="1"
-                list="quest-tuning-markers"
-              />
-              <datalist id="quest-tuning-markers">
-                <option value="0" label="Quick"></option>
-                <option value="1" label="Standard"></option>
-                <option value="2" label="Lore"></option>
-              </datalist>
-              <div class="boopsum-slider-labels" aria-hidden="true">
-                <span>Quick / low-interaction</span>
-                <span>Standard</span>
-                <span>Lore / high-interaction</span>
-              </div>
-              <label class="boopsum-precise-toggle">
-                <input type="checkbox" id="quest-tuning-precise" />
-                <span>Precise Tweaking</span>
-              </label>
-            </div>
-          </label>
           <p><strong>Quest type:</strong> <span id="out-quest-type"></span></p>
-          <p><strong>Tuning:</strong> <span id="out-effort-level"></span></p>
           <p><strong>Gold each:</strong> <span id="out-gp-selected"></span></p>
           <p id="out-itemloot-wrap"><strong>Item loot pool:</strong> <span id="out-itemloot"></span> <span class="muted">gp worth of items</span></p>
           <p id="out-loot-note" class="fine-print"></p>
@@ -718,7 +688,7 @@
               </ul>
             </li>
             <li><label><input type="checkbox" id="cc-check-backstory" /> I have a rough backstory</label></li>
-            <li><label><input type="checkbox" id="cc-check-initial-xp" /> I have added my initial experience to the <code>!xp</code> command</label></li>
+            <li><label><input type="checkbox" id="cc-check-initial-xp" /> I have added my initial quest points to the <code>!xp</code> command</label></li>
             <li><label><input type="checkbox" id="cc-check-health-match" /> The health in my character sheet matches the calculated value above</label></li>
           </ul>
         </div>
