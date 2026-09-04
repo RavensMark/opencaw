@@ -3,8 +3,8 @@
     "https://docs.google.com/spreadsheets/d/e/2PACX-1vSH9cqtzXf0D5gSXfiueKRmSufsZrdWEvsIF_umg2G2ND1OYEry6Y-JcR36rM5W1JrNcR3E0HYVvPP8/pub?output=csv&gid=553653062";
 
   var REWARDS = [
-    { key: "xp_gp", name: "XP + GP", cost: 1 },
-    { key: "xp", name: "XP", cost: 1 },
+    { key: "qp_gp", name: "QP + GP", cost: 1 },
+    { key: "qp", name: "QP", cost: 1 },
     { key: "gp", name: "GP", cost: 1 },
     { key: "common_gacha", name: "Common Item (Gacha)", cost: 10 },
     { key: "common_item", name: "Custom Common Item", cost: 30 },
@@ -12,6 +12,12 @@
     { key: "rare_item", name: "Custom Rare Item", cost: 120 },
   ];
 
+  // Flat QP per SP; solo QP/GP options pay 1.5x that currency.
+  var QP_PER_SP = 4;
+  var SOLO_MULT = 1.5;
+  var MONTHLY_SP_CAP = 10;
+
+  // Level-scaled GP still uses the old DM session tables (QP is flat).
   var DM_LIMITS = [0, 75, 150, 450, 950, 1875, 2250, 3500, 4000, 5250, 3750, 5000, 5000, 6250, 7500, 7500, 10000, 10000, 12500, 12500, 12500];
   var HALF_PROF = [0, 1, 1, 1, 1, 1.5, 1.5, 1.5, 1.5, 2, 2, 2, 2, 2.5, 2.5, 2.5, 2.5, 3, 3, 3, 3];
   var D_MOD = [0.5, 0.75, 1];
@@ -194,34 +200,57 @@
     var dmXp = Math.floor(cap / 6);
     dmXp = 5 * Math.round(dmXp / 5);
     var dmGp = Math.floor(dmXp / HALF_PROF[idx] * D_MOD[2] * GP_MOD[idx]);
+    var qp = QP_PER_SP;
+    var qpSolo = qp * SOLO_MULT;
+    var gpSolo = dmGp * SOLO_MULT;
     return {
-      xp: dmXp,
+      qp: qp,
+      qpSolo: qpSolo,
       gp: dmGp,
-      monthlyXpMax: dmXp * 6,
-      monthlyGpMax: dmGp * 6,
+      gpSolo: gpSolo,
+      monthlyQpMax: qp * MONTHLY_SP_CAP,
+      monthlyQpSoloMax: qpSolo * MONTHLY_SP_CAP,
+      monthlyGpMax: dmGp * MONTHLY_SP_CAP,
+      monthlyGpSoloMax: gpSolo * MONTHLY_SP_CAP,
     };
   }
 
   function rewardAmountText(reward, calc) {
-    if (reward.key === "xp_gp") {
+    if (reward.key === "qp_gp") {
       return (
-        calc.xp +
-        " XP + " +
+        calc.qp +
+        " QP + " +
         calc.gp +
-        " GP (max per month (10SP) = " +
-        calc.monthlyXpMax +
-        " XP + " +
+        " GP (max per month (" +
+        MONTHLY_SP_CAP +
+        "SP) = " +
+        calc.monthlyQpMax +
+        " QP + " +
         calc.monthlyGpMax +
         " GP/month)"
       );
     }
-    if (reward.key === "xp") {
-      return (calc.xp * 1.5)  + " XP (max per month (10SP) = " + (calc.monthlyXpMax * 1.5) + ")";
+    if (reward.key === "qp") {
+      return (
+        calc.qpSolo +
+        " QP (max per month (" +
+        MONTHLY_SP_CAP +
+        "SP) = " +
+        calc.monthlyQpSoloMax +
+        ")"
+      );
     }
     if (reward.key === "gp") {
-      return (calc.gp * 1.5) + " GP (max per month (10SP) = " + (calc.monthlyGpMax * 1.5) + ")";
+      return (
+        calc.gpSolo +
+        " GP (max per month (" +
+        MONTHLY_SP_CAP +
+        "SP) = " +
+        calc.monthlyGpSoloMax +
+        ")"
+      );
     }
-    return ""
+    return "";
   }
 
   function renderRewards(balance) {
